@@ -1,5 +1,5 @@
 import React from 'react';
-// import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Logo from '../../logo/logo';
 
 function NoFoundPage() {
@@ -22,12 +22,12 @@ function NoFoundPage() {
           }}
         />
         <p style={{textAlign: 'center'}}>You&apos;d better not make me sad — go to the&nbsp;
-          {/*<Link style={{*/}
-          {/*  textDecoration: 'underline',*/}
-          {/*  cursor: 'pointer',*/}
-          {/*}} to="/"*/}
-          {/*>homepage*/}
-          {/*</Link> and give me the highest rating*/}
+          <Link style={{
+            textDecoration: 'underline',
+            cursor: 'pointer',
+          }} to="/"
+          >main page
+          </Link> and give me the highest rating
         </p>
 
       </section>
