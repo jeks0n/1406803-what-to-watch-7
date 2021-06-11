@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
-import {AppRoute} from '../../const';
+import appRoot from '../../utils/app-root';
 import AddReviewPage from '../pages/add-review-page/add-review-page';
 import FilmPage from '../pages/film-page/film-page';
 import MainPage from '../pages/main-page/main-page';
@@ -9,7 +9,7 @@ import MyListPage from '../pages/my-list-page/my-list-page';
 import NoFoundPage from '../pages/no-found-page/no-found-page';
 import PlayerPage from '../pages/player-page/player-page';
 import SignInPage from '../pages/sign-in-page/sign-in-page';
-import {getMoviePropType} from '../../utils/props';
+import movieProp from '../../utils/movie.prop';
 
 function App(props) {
   const {
@@ -20,21 +20,24 @@ function App(props) {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path={AppRoute.MAIN}>
-          <MainPage
-            movies={movies}
-            promo={promo}
-          />
+        <Route exact path={appRoot.getMain()}>
+          <MainPage movies={movies} promo={promo} />
         </Route>
-        <Route exact path={AppRoute.SIGN_IN}>
+        <Route exact path={appRoot.getSignIn()}>
           <SignInPage />
         </Route>
-        <Route exact path={AppRoute.MY_LIST}>
-          <MyListPage />
+        <Route exact path={appRoot.getMyList()}>
+          <MyListPage movies={movies} />
         </Route>
-        <Route exact path={AppRoute.FILM} component={FilmPage} />
-        <Route exact path={AppRoute.ADD_REVIEW} component={AddReviewPage} />
-        <Route exact path={AppRoute.PLAYER} component={PlayerPage} />
+        <Route exact path={appRoot.getFilm()} >
+          <FilmPage movies={movies} />
+        </Route>
+        <Route exact path={appRoot.getAddPreview()}>
+          <AddReviewPage movies={movies} />
+        </Route>
+        <Route exact path={appRoot.getPlayer()}>
+          <PlayerPage movies={movies} />
+        </Route>
         <Route>
           <NoFoundPage />
         </Route>
@@ -44,8 +47,8 @@ function App(props) {
 }
 
 App.propTypes = {
-  movies: PropTypes.arrayOf(getMoviePropType()),
-  promo: getMoviePropType(),
+  movies: PropTypes.arrayOf(movieProp),
+  promo: movieProp,
 };
 
 export default App;

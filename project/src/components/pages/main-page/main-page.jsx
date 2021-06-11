@@ -1,18 +1,17 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import PromoMovieCard from '../../movie/promo-movie/promo-movie';
-import SmallMovieCard from '../../movie/small-movie-card/small-movie-card';
-import Logo from '../../logo/logo';
-import {getMoviePropType} from '../../../utils/props';
+import MovieList from '../../movie/movie-list/movie-list';
+import Logo from '../../UI/logo/logo';
+import movieProp from '../../../utils/movie.prop';
+import {Genre} from '../../../const';
 
 function MainPage(props) {
-  return (
-    <Fragment>
-      <section className="film-card">
-        <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel"/>
-        </div>
+  const genres = Object.values(Genre);
 
+  return (
+    <>
+      <section className="film-card">
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header film-card__head">
@@ -38,41 +37,14 @@ function MainPage(props) {
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
           <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="/#" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Thrillers</a>
-            </li>
+            {genres.map((genre, index) => (
+              <li className={`catalog__genres-item ${index === 0 && 'catalog__genres-item--active'}`} key={genre}>
+                <a href="/#" className="catalog__genres-link">{genre}</a>
+              </li>
+            ))}
           </ul>
 
-          <div className="catalog__films-list">
-            {props.movies.map((movie) => <SmallMovieCard key={movie.id} movie={movie} />)}
-          </div>
+          <MovieList movies={props.movies} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
@@ -87,13 +59,13 @@ function MainPage(props) {
           </div>
         </footer>
       </div>
-    </Fragment>
+    </>
   );
 }
 
 MainPage.propTypes = {
-  movies: PropTypes.arrayOf(getMoviePropType()),
-  promo: getMoviePropType(),
+  movies: PropTypes.arrayOf(movieProp),
+  promo: movieProp,
 };
 
 export default MainPage;
