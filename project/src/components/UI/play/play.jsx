@@ -1,7 +1,6 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 import movieProp from '../../../utils/movie.prop';
-import appRoot from '../../../utils/app-root';
 
 function Play(props) {
   const {movie} = props;
@@ -13,7 +12,7 @@ function Play(props) {
       className="btn btn--play film-card__button"
       type="button"
       onClick={() => history.push({
-        pathname: appRoot.getPlayer(movie.id),
+        pathname: `/player/${movie.id}`,
         state: {movie},
       })}
     >

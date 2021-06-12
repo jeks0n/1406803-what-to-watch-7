@@ -4,7 +4,6 @@ import Logo from '../../UI/logo/logo';
 import MovieList from '../../movie/movie-list/movie-list';
 import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
-import appRoute from '../../../utils/app-root';
 import Play from '../../UI/play/play';
 
 const MOVIE_GRADES = [
@@ -79,7 +78,7 @@ function FilmPage(props) {
                 </button>
                 <Link href="add-review.html"
                   className="btn film-card__button"
-                  to={`${appRoute.getAddPreview(movie.id)}`}
+                  to={`/films/${movie.id}/review`}
                   movies={[movie]}
                 >Add review
                 </Link>

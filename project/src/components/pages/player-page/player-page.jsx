@@ -2,7 +2,7 @@ import React from 'react';
 import {useParams, useHistory} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
-import appRoot from '../../../utils/app-root';
+import {AppRoute} from '../../../const';
 
 function PlayerPage(props) {
   const params = useParams();
@@ -19,7 +19,7 @@ function PlayerPage(props) {
           return history.goBack();
         }
 
-        history.push(appRoot.getMain());
+        history.push(AppRoute.MAIN);
       }}
       >Exit
       </button>

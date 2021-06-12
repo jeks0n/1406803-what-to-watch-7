@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
-import appRoot from '../../utils/app-root';
+import {AppRoute} from '../../const';
 import AddReviewPage from '../pages/add-review-page/add-review-page';
 import FilmPage from '../pages/film-page/film-page';
 import MainPage from '../pages/main-page/main-page';
@@ -20,22 +20,22 @@ function App(props) {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path={appRoot.getMain()}>
+        <Route exact path={AppRoute.MAIN}>
           <MainPage movies={movies} promo={promo} />
         </Route>
-        <Route exact path={appRoot.getSignIn()}>
+        <Route exact path={AppRoute.SIGN_IN}>
           <SignInPage />
         </Route>
-        <Route exact path={appRoot.getMyList()}>
+        <Route exact path={AppRoute.MY_LIST}>
           <MyListPage movies={movies} />
         </Route>
-        <Route exact path={appRoot.getFilm()} >
+        <Route exact path={AppRoute.FILM} >
           <FilmPage movies={movies} />
         </Route>
-        <Route exact path={appRoot.getAddPreview()}>
+        <Route exact path={AppRoute.ADD_REVIEW}>
           <AddReviewPage movies={movies} />
         </Route>
-        <Route exact path={appRoot.getPlayer()}>
+        <Route exact path={AppRoute.PLAYER}>
           <PlayerPage movies={movies} />
         </Route>
         <Route>

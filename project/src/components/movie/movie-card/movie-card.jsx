@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import appRoute from '../../../utils/app-root';
 import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
 
@@ -17,7 +16,7 @@ function MovieCard(props) {
         <img src={movie.previewImage} alt={movie.name} width="280" height="175"/>
       </div>
       <h3 className="small-film-card__title">
-        <Link className="small-film-card__link" to={`${appRoute.getFilm(movie.id)}`} movies={[movie]}>
+        <Link className="small-film-card__link" to={`/films/${movie.id}`} movies={[movie]}>
           {movie.name}
         </Link>
       </h3>
