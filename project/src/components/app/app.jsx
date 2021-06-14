@@ -9,7 +9,7 @@ import MyListPage from '../pages/my-list-page/my-list-page';
 import NoFoundPage from '../pages/no-found-page/no-found-page';
 import PlayerPage from '../pages/player-page/player-page';
 import SignInPage from '../pages/sign-in-page/sign-in-page';
-import {getMoviePropType} from '../../utils/props';
+import movieProp from '../../utils/movie.prop';
 
 function App(props) {
   const {
@@ -21,20 +21,23 @@ function App(props) {
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.MAIN}>
-          <MainPage
-            movies={movies}
-            promo={promo}
-          />
+          <MainPage movies={movies} promo={promo} />
         </Route>
         <Route exact path={AppRoute.SIGN_IN}>
           <SignInPage />
         </Route>
         <Route exact path={AppRoute.MY_LIST}>
-          <MyListPage />
+          <MyListPage movies={movies} />
         </Route>
-        <Route exact path={AppRoute.FILM} component={FilmPage} />
-        <Route exact path={AppRoute.ADD_REVIEW} component={AddReviewPage} />
-        <Route exact path={AppRoute.PLAYER} component={PlayerPage} />
+        <Route exact path={AppRoute.FILM} >
+          <FilmPage movies={movies} />
+        </Route>
+        <Route exact path={AppRoute.ADD_REVIEW}>
+          <AddReviewPage movies={movies} />
+        </Route>
+        <Route exact path={AppRoute.PLAYER}>
+          <PlayerPage movies={movies} />
+        </Route>
         <Route>
           <NoFoundPage />
         </Route>
@@ -44,8 +47,8 @@ function App(props) {
 }
 
 App.propTypes = {
-  movies: PropTypes.arrayOf(getMoviePropType()),
-  promo: getMoviePropType(),
+  movies: PropTypes.arrayOf(movieProp),
+  promo: movieProp,
 };
 
 export default App;

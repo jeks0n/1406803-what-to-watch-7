@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import Logo from '../../logo/logo';
+import Logo from '../../UI/logo/logo';
 
 function NoFoundPage() {
   return (
