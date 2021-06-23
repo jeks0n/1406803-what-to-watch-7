@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
 
 function MovieList(props) {
-  const [, setActiveMovie] = useState({});
+  const [activeMovie, setActiveMovie] = useState({});
 
   const activeMovieHandler = (movie) => {
     setActiveMovie(movie);
@@ -12,7 +12,7 @@ function MovieList(props) {
 
   return (
     <div className="catalog__films-list">
-      {props.movies.map((movie) => <MovieCard key={movie.id} movie={movie} setActiveMovie={activeMovieHandler} />)}
+      {props.movies.map((movie) => <MovieCard key={movie.id} movie={movie} isActiveMovie={movie.id === activeMovie.id} onActiveMovieChange={activeMovieHandler} />)}
     </div>
   );
 }
