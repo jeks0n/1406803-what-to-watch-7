@@ -5,33 +5,18 @@ import MovieList from '../../movie/movie-list/movie-list';
 import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
 import Play from '../../UI/play/play';
-
-const MOVIE_GRADES = [
-  ['Bad', [0, 3]],
-  ['Normal', [3, 5]],
-  ['Good', [5, 8]],
-  ['Very good', [8, 10]],
-  ['Awesome', [10, Infinity]],
-];
+import FilmTabs from './film-tabs/film-tabs';
 
 function FilmPage(props) {
   const params = useParams();
   const [movie] = props.movies.filter((film) => film.id === +params.id);
   const {
     name,
-    description,
-    director,
-    actors,
     genre,
     posterImage,
     backgroundImage,
     released,
-    rating,
-    scoresCount,
   } = movie;
-  const ratingText = rating.toFixed(1);
-  const [movieLevel] = MOVIE_GRADES.find(([, grade]) => (rating >= grade[0] && rating < grade[1]));
-  const actorsText = actors.join(', ');
   // Временно
   const similarMovies = props.movies.slice().sort(() => Math.random() - 0.5).slice(0, 4);
 
@@ -93,39 +78,7 @@ function FilmPage(props) {
               <img src={posterImage} alt={`${name} poster`} width="218" height="327"/>
             </div>
 
-            <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <a href="/#" className="film-nav__link">Overview</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="/#" className="film-nav__link">Details</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="/#" className="film-nav__link">Reviews</a>
-                  </li>
-                </ul>
-              </nav>
-
-              <div className="film-rating">
-                <div className="film-rating__score">{ratingText}</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">{movieLevel}</span>
-                  <span className="film-rating__count">{scoresCount} ratings</span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                <p>{description}</p>
-
-                <p className="film-card__director"><strong>Director: {director}</strong></p>
-
-                <p className="film-card__starring">
-                  <strong>Starring: {actorsText}</strong>
-                </p>
-              </div>
-            </div>
+            <FilmTabs movie={movie}/>
           </div>
         </div>
       </section>
