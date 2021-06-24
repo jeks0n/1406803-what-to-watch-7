@@ -19,3 +19,9 @@ export const Genre = {
   SCI_FI: 'Sci-Fi',
   THRILLERS: 'Thrillers',
 };
+
+export const MovieTab = {
+  OVERVIEW: 'Overview',
+  DETAILS: 'Details',
+  REVIEWS: 'Reviews',
+};

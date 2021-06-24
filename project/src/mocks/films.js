@@ -7,7 +7,7 @@ const MOVIES = [{
   backgroundColor: '#ffffff',
   videoLink: 'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4',
   previewVideoLink: 'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4',
-  description: 'In the 1930s, the Grand Budapest Hotel is a popular European ski resort, presided over by concierge Gustave H. (Ralph Fiennes). Zero, a junior lobby boy, becomes Gustave\'s friend and protege.',
+  description: 'This is a special feature found on the second disc of the Terminator 3: Rise of the Machines DVD.',
   rating: 5.9,
   scoresCount: 123,
   director: 'Wes Andreson',
