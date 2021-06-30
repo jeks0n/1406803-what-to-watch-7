@@ -1,24 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {ActionCreator} from '../../../../store/action';
 import PropTypes from 'prop-types';
-import movieProp from '../../../../utils/movie.prop';
-import {getGenres} from '../../../../utils/movie';
-
-const MAX_TABS_COUNT = 10;
 
 function GenreTabs(props) {
-  const {filteredGenre, filterMoviesByGenre, movies} = props;
-  const [genres, setGenres] = useState(getGenres(movies, MAX_TABS_COUNT));
-
-  useEffect(() => {
-    setGenres(getGenres(movies, MAX_TABS_COUNT));
-  }, [movies]);
+  const {currentGenre, genres, filterMoviesByGenre} = props;
 
   return (
     <ul className="catalog__genres-list">
       {genres.map((genre, index) => (
-        <li className={`catalog__genres-item ${filteredGenre === genre && 'catalog__genres-item--active'}`} key={genre}>
+        <li className={`catalog__genres-item ${currentGenre === genre && 'catalog__genres-item--active'}`} key={genre}>
           <a href="/#"
             className="catalog__genres-link"
             onClick={(evt) => {
@@ -34,14 +25,14 @@ function GenreTabs(props) {
 }
 
 GenreTabs.propTypes = {
-  filteredGenre: PropTypes.string.isRequired,
-  movies: PropTypes.arrayOf(movieProp).isRequired,
+  currentGenre: PropTypes.string.isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   filterMoviesByGenre: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  filteredGenre: state.filteredGenre,
-  movies: state.movies,
+  currentGenre: state.currentGenre,
+  genres: state.genres,
 });
 
 const mapDispatchToProps = (dispatch) => ({

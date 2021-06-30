@@ -8,6 +8,7 @@ export const AppRoute = {
 };
 
 export const ALL_GENRES = 'All genres';
+export const MAX_GENRES_TABS_COUNT = 10;
 
 export const MovieTab = {
   OVERVIEW: 'Overview',

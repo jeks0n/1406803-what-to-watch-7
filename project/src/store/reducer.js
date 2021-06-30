@@ -1,10 +1,11 @@
-import {ALL_GENRES} from '../const';
+import {ALL_GENRES, MAX_GENRES_TABS_COUNT} from '../const';
 import MOVIES from '../mocks/films';
 import {ActionType} from './action';
+import {getGenres} from '../utils/movie';
 
 const initialState = {
-  filteredGenre: ALL_GENRES,
-  filteredMovies: MOVIES,
+  currentGenre: ALL_GENRES,
+  genres: getGenres(MOVIES, MAX_GENRES_TABS_COUNT),
   movies: MOVIES,
 };
 
@@ -13,17 +14,17 @@ const reducer = (state = initialState, action) => {
     case ActionType.SET_GENRE_TO_FILTER:
       return {
         ...state,
-        filteredGenre: action.payload,
+        currentGenre: action.payload,
       };
     case ActionType.FILTER_MOVIES_BY_GENRE:
       return action.payload === ALL_GENRES ?
         {
           ...state,
-          filteredMovies: state.movies,
+          movies: initialState.movies,
         }
         : {
           ...state,
-          filteredMovies: state.movies.filter((movie) => movie.genre === state.filteredGenre),
+          movies: initialState.movies.filter((movie) => movie.genre === state.currentGenre),
         };
     default:
       return state;

@@ -62,7 +62,7 @@ MainPage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  movies: state.filteredMovies,
+  movies: state.movies,
 });
 
 export {MainPage};
