@@ -21,7 +21,7 @@ function App(props) {
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.MAIN}>
-          <MainPage movies={movies} promo={promo} />
+          <MainPage promo={promo} />
         </Route>
         <Route exact path={AppRoute.SIGN_IN}>
           <SignInPage />

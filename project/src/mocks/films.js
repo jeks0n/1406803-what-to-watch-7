@@ -67,7 +67,7 @@ const MOVIES = [{
   director: 'John McTiernan',
   actors: ['Jack Nicholson', 'Marlon Brando', 'Robert De Niro'],
   runtime: 125,
-  genre: 'Fantasy',
+  genre: 'Documentary',
   released: 1993,
   isFavorite: false,
 },{
@@ -103,7 +103,7 @@ const MOVIES = [{
   director: 'Ivan Reitman',
   actors: ['Dustin Hoffman', 'Tom Hanks', 'Anthony Hopkins', 'Paul Newman'],
   runtime: 90,
-  genre: 'Criminal',
+  genre: 'Kids & Family',
   released: 1990,
   isFavorite: false,
 },{
