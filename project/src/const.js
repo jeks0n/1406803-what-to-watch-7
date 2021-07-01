@@ -7,18 +7,8 @@ export const AppRoute = {
   SIGN_IN: '/login',
 };
 
-export const Genre = {
-  ALL: 'All genres',
-  COMEDIES: 'Comedies',
-  CRIME: 'Crime',
-  DOCUMENTARY: 'Documentary',
-  DRAMAS: 'Dramas',
-  HORROR: 'Horror',
-  KIDS_AND_FAMILY: 'Kids & Family',
-  ROMANCE: 'Romance',
-  SCI_FI: 'Sci-Fi',
-  THRILLERS: 'Thrillers',
-};
+export const ALL_GENRES = 'All genres';
+export const MAX_GENRES_TABS_COUNT = 10;
 
 export const MovieTab = {
   OVERVIEW: 'Overview',

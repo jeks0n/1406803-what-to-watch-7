@@ -1,14 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import PromoMovieCard from '../../movie/promo-movie/promo-movie';
-import MovieList from '../../movie/movie-list/movie-list';
+import {connect} from 'react-redux';
 import Logo from '../../UI/logo/logo';
+import PromoMovieCard from '../../movie/promo-movie/promo-movie';
+import GenreTabs from './genre-tabs/genre-tabs';
+import MovieList from '../../movie/movie-list/movie-list';
+import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
-import {Genre} from '../../../const';
 
 function MainPage(props) {
-  const genres = Object.values(Genre);
-
   return (
     <>
       <section className="film-card">
@@ -36,13 +35,7 @@ function MainPage(props) {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
-            {genres.map((genre, index) => (
-              <li className={`catalog__genres-item ${index === 0 && 'catalog__genres-item--active'}`} key={genre}>
-                <a href="/#" className="catalog__genres-link">{genre}</a>
-              </li>
-            ))}
-          </ul>
+          <GenreTabs />
 
           <MovieList movies={props.movies} />
 
@@ -68,4 +61,9 @@ MainPage.propTypes = {
   promo: movieProp,
 };
 
-export default MainPage;
+const mapStateToProps = (state) => ({
+  movies: state.movies,
+});
+
+export {MainPage};
+export default connect(mapStateToProps, null)(MainPage);
