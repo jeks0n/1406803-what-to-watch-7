@@ -2,7 +2,7 @@ import React from 'react';
 import {useHistory} from 'react-router-dom';
 import movieProp from '../../../utils/movie.prop';
 
-function Play(props) {
+function PlayButton(props) {
   const {movie} = props;
 
   const history = useHistory();
@@ -24,8 +24,8 @@ function Play(props) {
   );
 }
 
-Play.propTypes = {
+PlayButton.propTypes = {
   movie: movieProp,
 };
 
-export default Play;
+export default PlayButton;

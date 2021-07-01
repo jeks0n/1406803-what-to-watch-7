@@ -67,7 +67,7 @@ const MOVIES = [{
   director: 'John McTiernan',
   actors: ['Jack Nicholson', 'Marlon Brando', 'Robert De Niro'],
   runtime: 125,
-  genre: 'Documentary',
+  genre: 'Comedy',
   released: 1993,
   isFavorite: false,
 },{
@@ -85,7 +85,7 @@ const MOVIES = [{
   director: 'Walter Hill',
   actors: ['Al Pacino', 'Daniel Day-Lewis'],
   runtime: 95,
-  genre: 'Romance',
+  genre: 'Comedy',
   released: 1988,
   isFavorite: false,
 },{
@@ -103,7 +103,7 @@ const MOVIES = [{
   director: 'Ivan Reitman',
   actors: ['Dustin Hoffman', 'Tom Hanks', 'Anthony Hopkins', 'Paul Newman'],
   runtime: 90,
-  genre: 'Kids & Family',
+  genre: 'Comedy',
   released: 1990,
   isFavorite: false,
 },{

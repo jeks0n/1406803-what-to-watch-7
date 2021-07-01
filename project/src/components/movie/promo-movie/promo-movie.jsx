@@ -1,6 +1,6 @@
 import React from 'react';
 import movieProp from '../../../utils/movie.prop';
-import Play from '../../UI/play/play';
+import PlayButton from '../../UI/play-button/play-button';
 
 function PromoMovie(props) {
   const {movie} = props;
@@ -32,7 +32,7 @@ function PromoMovie(props) {
             </p>
 
             <div className="film-card__buttons">
-              <Play movie={movie}/>
+              <PlayButton movie={movie}/>
               <button className="btn btn--list film-card__button" type="button">
                 <svg viewBox="0 0 19 20" width="19" height="20">
                   <use xlinkHref="#add"></use>

@@ -4,7 +4,7 @@ import Logo from '../../UI/logo/logo';
 import MovieList from '../../movie/movie-list/movie-list';
 import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
-import Play from '../../UI/play/play';
+import PlayButton from '../../UI/play-button/play-button';
 import FilmTabs from './film-tabs/film-tabs';
 
 function FilmPage(props) {
@@ -54,7 +54,7 @@ function FilmPage(props) {
               </p>
 
               <div className="film-card__buttons">
-                <Play movie={movie}/>
+                <PlayButton movie={movie}/>
                 <button className="btn btn--list film-card__button" type="button">
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
