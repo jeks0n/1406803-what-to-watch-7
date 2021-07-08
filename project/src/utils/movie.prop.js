@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
 export default PropTypes.shape({
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
+  id: PropTypes.number,
+  name: PropTypes.string,
   posterImage: PropTypes.string,
   previewImage: PropTypes.string,
   backgroundImage: PropTypes.string,

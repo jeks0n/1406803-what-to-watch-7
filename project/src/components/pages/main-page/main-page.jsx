@@ -12,12 +12,14 @@ import {ActionCreator} from '../../../store/action';
 function MainPage(props) {
   const {
     movies,
-    promo,
+    promoMovie,
     numberOfVisibleMovies,
     increaseNumberOfVisibleMovies,
     resetNumberOfVisibleMovies,
+    isMoviesLoaded,
     isShowMoreButtonVisible,
   } = props;
+
   useEffect(() => resetNumberOfVisibleMovies, [resetNumberOfVisibleMovies]);
 
   return (
@@ -40,7 +42,7 @@ function MainPage(props) {
           </ul>
         </header>
 
-        <PromoMovieCard movie={promo} />
+        <PromoMovieCard movie={promoMovie} />
       </section>
 
       <div className="page-content">
@@ -49,7 +51,7 @@ function MainPage(props) {
 
           <GenreTabs />
 
-          <MovieList movies={movies} numberOfVisibleMovies={numberOfVisibleMovies} />
+          <MovieList movies={movies} numberOfVisibleMovies={numberOfVisibleMovies} isMoviesLoaded={isMoviesLoaded} />
 
           {isShowMoreButtonVisible && <ShowMoreButton onClickEvent={increaseNumberOfVisibleMovies} />}
         </section>
@@ -67,16 +69,19 @@ function MainPage(props) {
 }
 
 MainPage.propTypes = {
-  movies: PropTypes.arrayOf(movieProp),
-  promo: movieProp,
+  movies: PropTypes.arrayOf(movieProp).isRequired,
+  promoMovie: movieProp.isRequired,
   numberOfVisibleMovies: PropTypes.number.isRequired,
   increaseNumberOfVisibleMovies: PropTypes.func.isRequired,
   resetNumberOfVisibleMovies: PropTypes.func.isRequired,
   isShowMoreButtonVisible: PropTypes.bool.isRequired,
+  isMoviesLoaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   movies: state.movies,
+  promoMovie: state.promoMovie,
+  isMoviesLoaded: state.isMoviesLoaded,
   numberOfVisibleMovies: state.numberOfVisibleMovies,
   isShowMoreButtonVisible: state.isShowMoreButtonVisible,
 });

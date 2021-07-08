@@ -1,24 +1,52 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link, useParams} from 'react-router-dom';
+import {connect} from 'react-redux';
 import Logo from '../../UI/logo/logo';
 import MovieList from '../../movie/movie-list/movie-list';
 import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
+import commentProp from '../../../utils/comment.prop';
 import PlayButton from '../../UI/play-button/play-button';
 import FilmTabs from './film-tabs/film-tabs';
+import {fetchCurrentMovie, fetchCurrentMovieComments, fetchSimilarMovies} from '../../../store/api-actions';
+import LoadingScreen from '../../UI/loading-screen/loading-screen';
+import {ActionCreator} from '../../../store/action';
 
 function FilmPage(props) {
   const params = useParams();
-  const [movie] = props.movies.filter((film) => film.id === +params.id);
   const {
+    currentMovie,
+    getCurrentMovie,
+    isCurrentMovieLoaded,
+    getCurrentMovieComments,
+    currentMovieComments,
+    isCurrentMovieCommentsLoaded,
+    similarMovies,
+    getSimilarMovies,
+    isSimilarMoviesLoaded,
+    resetState,
+  } = props;
+
+  useEffect(() => resetState(), [resetState, params]);
+  useEffect(() => getCurrentMovie(params.id), [getCurrentMovie, params]);
+  useEffect(() => getCurrentMovieComments(params.id), [getCurrentMovieComments, params]);
+  useEffect(() => getSimilarMovies(params.id), [getSimilarMovies, params]);
+  useEffect(() => resetState, [resetState]);
+
+  if (!isCurrentMovieLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  const {
+    id,
     name,
     genre,
     posterImage,
     backgroundImage,
     released,
-  } = movie;
-  // Временно
-  const similarMovies = props.movies.slice().sort(() => Math.random() - 0.5).slice(0, 4);
+  } = currentMovie;
 
   return (
     <>
@@ -54,7 +82,7 @@ function FilmPage(props) {
               </p>
 
               <div className="film-card__buttons">
-                <PlayButton movie={movie}/>
+                <PlayButton movie={currentMovie}/>
                 <button className="btn btn--list film-card__button" type="button">
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
@@ -63,8 +91,8 @@ function FilmPage(props) {
                 </button>
                 <Link href="add-review.html"
                   className="btn film-card__button"
-                  to={`/films/${movie.id}/review`}
-                  movies={[movie]}
+                  to={`/films/${id}/review`}
+                  movie={currentMovie}
                 >Add review
                 </Link>
               </div>
@@ -78,7 +106,7 @@ function FilmPage(props) {
               <img src={posterImage} alt={`${name} poster`} width="218" height="327"/>
             </div>
 
-            <FilmTabs movie={movie}/>
+            <FilmTabs movie={currentMovie} comments={currentMovieComments} isCommentsLoaded={isCurrentMovieCommentsLoaded} />
           </div>
         </div>
       </section>
@@ -87,7 +115,7 @@ function FilmPage(props) {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <MovieList movies={similarMovies} />
+          <MovieList movies={similarMovies} isMoviesLoaded={isSimilarMoviesLoaded} />
         </section>
 
         <footer className="page-footer">
@@ -103,7 +131,46 @@ function FilmPage(props) {
 }
 
 FilmPage.propTypes = {
-  movies: PropTypes.arrayOf(movieProp),
+  getCurrentMovie: PropTypes.func.isRequired,
+  getCurrentMovieComments: PropTypes.func.isRequired,
+  getSimilarMovies: PropTypes.func.isRequired,
+  resetState: PropTypes.func.isRequired,
+  currentMovie: movieProp,
+  currentMovieComments: PropTypes.arrayOf(commentProp),
+  similarMovies: PropTypes.arrayOf(movieProp).isRequired,
+  isCurrentMovieLoaded: PropTypes.bool.isRequired,
+  isCurrentMovieCommentsLoaded: PropTypes.bool.isRequired,
+  isSimilarMoviesLoaded: PropTypes.bool.isRequired,
 };
 
-export default FilmPage;
+const mapStateToProps = (state) => ({
+  currentMovie: state.currentMovie,
+  currentMovieComments: state.currentMovieComments,
+  similarMovies: state.similarMovies,
+  isCurrentMovieLoaded: state.isCurrentMovieLoaded,
+  isCurrentMovieCommentsLoaded: state.isCurrentMovieCommentsLoaded,
+  isSimilarMoviesLoaded: state.isSimilarMoviesLoaded,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getCurrentMovie(id) {
+    dispatch(fetchCurrentMovie(id));
+  },
+  getCurrentMovieComments(id) {
+    dispatch(fetchCurrentMovieComments(id));
+  },
+  getSimilarMovies(id) {
+    dispatch(fetchSimilarMovies(id));
+  },
+  resetState() {
+    dispatch(ActionCreator.resetCurrentMovie());
+    dispatch(ActionCreator.resetIsCurrentMovieLoaded());
+    dispatch(ActionCreator.resetCurrentMovieComments());
+    dispatch(ActionCreator.resetIsCurrentMovieCommentsLoaded());
+    dispatch(ActionCreator.resetSimilarMovies());
+    dispatch(ActionCreator.resetIsSimilarMoviesLoaded());
+  },
+});
+
+export {FilmPage};
+export default connect(mapStateToProps, mapDispatchToProps)(FilmPage);

@@ -1,18 +1,36 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
 import {AppRoute} from '../../../const';
+import {fetchCurrentMovie} from '../../../store/api-actions';
+import {ActionCreator} from '../../../store/action';
+import LoadingScreen from '../../UI/loading-screen/loading-screen';
 
 function PlayerPage(props) {
   const params = useParams();
   const history = useHistory();
+  const {
+    getCurrentMovie,
+    resetState,
+    currentMovie,
+    isCurrentMovieLoaded,
+  } = props;
 
-  const [watchingMovie] = props.movies.filter((movie) => movie.id === +params.id);
+  useEffect(() => resetState(), [resetState, params]);
+  useEffect(() => getCurrentMovie(params.id), [getCurrentMovie, params]);
+  useEffect(() => resetState, [resetState]);
+
+  if (!isCurrentMovieLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <div className="player">
-      <video src={watchingMovie.videoLink} className="player__video" poster="img/player-poster.jpg"></video>
+      <video src={currentMovie.videoLink} className="player__video" poster="img/player-poster.jpg"></video>
 
       <button type="button" className="player__exit" onClick={() => {
         if (history.action !== 'POP') {
@@ -55,7 +73,26 @@ function PlayerPage(props) {
 }
 
 PlayerPage.propTypes = {
-  movies: PropTypes.arrayOf(movieProp),
+  getCurrentMovie: PropTypes.func.isRequired,
+  resetState: PropTypes.func.isRequired,
+  currentMovie: movieProp.isRequired,
+  isCurrentMovieLoaded: PropTypes.bool.isRequired,
 };
 
-export default PlayerPage;
+const mapStateToProps = (state) => ({
+  currentMovie: state.currentMovie,
+  isCurrentMovieLoaded: state.isCurrentMovieLoaded,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getCurrentMovie(id) {
+    dispatch(fetchCurrentMovie(id));
+  },
+  resetState() {
+    dispatch(ActionCreator.resetCurrentMovie());
+    dispatch(ActionCreator.resetIsCurrentMovieLoaded());
+  },
+});
+
+export {PlayerPage};
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerPage);

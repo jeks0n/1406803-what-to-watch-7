@@ -1,15 +1,19 @@
 import React from 'react';
-import generateComments from '../../../../../mocks/comments';
-import movieProp from '../../../../../utils/movie.prop';
 import {getHumanDate, getMachineDate} from '../../../../../utils/date';
+import PropTypes from 'prop-types';
+import commentProp from '../../../../../utils/comment.prop';
+import LoadingScreen from '../../../../UI/loading-screen/loading-screen';
 
-const COMMENT_COUNT = 7;
 const COLUMN_COUNT = 2;
 
-function FilmReviews({movie}) {
-  const {movieId} = movie;
-  const comments = generateComments(COMMENT_COUNT, movieId)
-    .sort((comment) => comment.date.getTime() - comment.date.getTime())
+function FilmReviews({comments, isCommentsLoaded}) {
+  if (!isCommentsLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  const commentsElements = comments
     .map(({id, user, rating, date, comment}) => (
       <div key={id} className="review">
         <blockquote className="review__quote">
@@ -29,17 +33,18 @@ function FilmReviews({movie}) {
   return (
     <div className="film-card__reviews film-card__row">
       <div className="film-card__reviews-col">
-        {comments.slice(0, middleReviewElementIndex)}
+        {commentsElements.slice(0, middleReviewElementIndex)}
       </div>
       <div className="film-card__reviews-col">
-        {comments.slice(middleReviewElementIndex)}
+        {commentsElements.slice(middleReviewElementIndex)}
       </div>
     </div>
   );
 }
 
 FilmReviews.propTypes = {
-  movie: movieProp,
+  comments: PropTypes.arrayOf(commentProp).isRequired,
+  isCommentsLoaded: PropTypes.bool.isRequired,
 };
 
 export default FilmReviews;
