@@ -23,9 +23,12 @@ function MainPage(props) {
     isShowMoreButtonVisible,
   } = props;
 
-  useEffect(() => getMovies(), [getMovies]);
-  useEffect(() => getPromoMovie(), [getPromoMovie]);
-  useEffect(() => resetNumberOfVisibleMovies, [resetNumberOfVisibleMovies]);
+  useEffect(() => {
+    getMovies();
+    getPromoMovie();
+
+    return resetNumberOfVisibleMovies;
+  }, [getMovies, getPromoMovie, resetNumberOfVisibleMovies]);
 
   return (
     <>

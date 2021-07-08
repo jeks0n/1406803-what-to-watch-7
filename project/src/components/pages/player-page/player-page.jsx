@@ -18,9 +18,11 @@ function PlayerPage(props) {
     isCurrentMovieLoaded,
   } = props;
 
-  useEffect(() => resetState(), [resetState, params]);
-  useEffect(() => getCurrentMovie(params.id), [getCurrentMovie, params]);
-  useEffect(() => resetState, [resetState]);
+  useEffect(() => {
+    resetState();
+    getCurrentMovie(params.id);
+    return resetState;
+  }, [getCurrentMovie, resetState, params]);
 
   if (!isCurrentMovieLoaded) {
     return (

@@ -27,11 +27,13 @@ function FilmPage(props) {
     resetState,
   } = props;
 
-  useEffect(() => resetState(), [resetState, params]);
-  useEffect(() => getCurrentMovie(params.id), [getCurrentMovie, params]);
-  useEffect(() => getCurrentMovieComments(params.id), [getCurrentMovieComments, params]);
-  useEffect(() => getSimilarMovies(params.id), [getSimilarMovies, params]);
-  useEffect(() => resetState, [resetState]);
+  useEffect(() => {
+    resetState();
+    getCurrentMovie(params.id);
+    getCurrentMovieComments(params.id);
+    getSimilarMovies(params.id);
+    return resetState;
+  }, [resetState, getCurrentMovie, getCurrentMovieComments, getSimilarMovies, params]);
 
   if (!isCurrentMovieLoaded) {
     return (
