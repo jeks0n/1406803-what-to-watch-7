@@ -8,9 +8,12 @@ import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
 import ShowMoreButton from '../../UI/show-more-button/show-more-button';
 import {ActionCreator} from '../../../store/action';
+import {fetchMovies, fetchPromoMovie} from '../../../store/api-actions';
 
 function MainPage(props) {
   const {
+    getMovies,
+    getPromoMovie,
     movies,
     promoMovie,
     numberOfVisibleMovies,
@@ -20,6 +23,8 @@ function MainPage(props) {
     isShowMoreButtonVisible,
   } = props;
 
+  useEffect(() => getMovies(), [getMovies]);
+  useEffect(() => getPromoMovie(), [getPromoMovie]);
   useEffect(() => resetNumberOfVisibleMovies, [resetNumberOfVisibleMovies]);
 
   return (
@@ -69,6 +74,8 @@ function MainPage(props) {
 }
 
 MainPage.propTypes = {
+  getMovies: PropTypes.func.isRequired,
+  getPromoMovie: PropTypes.func.isRequired,
   movies: PropTypes.arrayOf(movieProp).isRequired,
   promoMovie: movieProp.isRequired,
   numberOfVisibleMovies: PropTypes.number.isRequired,
@@ -87,6 +94,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  getMovies() {
+    dispatch(fetchMovies());
+  },
+  getPromoMovie() {
+    dispatch(fetchPromoMovie());
+  },
   increaseNumberOfVisibleMovies() {
     dispatch(ActionCreator.increaseNumberOfVisibleMovies());
     dispatch(ActionCreator.checkShowMoreButtonVisibility());

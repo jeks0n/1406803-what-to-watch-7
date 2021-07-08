@@ -125,12 +125,6 @@ const reducer = (state = initialState, action) => {
         currentMovieComments: action.payload,
         isCurrentMovieCommentsLoaded: true,
       };
-    case ActionType.GET_CURRENT_MOVIE:
-      return {
-        ...state,
-        currentMovie: state.initialMovies.filter(({id}) => id === +action.payload)[0],
-        isCurrentMovieLoaded: true,
-      };
     case ActionType.GET_GENRES:
       return {
         ...state,

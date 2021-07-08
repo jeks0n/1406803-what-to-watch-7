@@ -9,7 +9,6 @@ import App from './components/app/app';
 import {reducer} from './store/reducer';
 import {ActionCreator} from './store/action';
 import {AuthorizationStatus} from './const';
-import {fetchMovies, fetchPromoMovie} from './store/api-actions';
 
 const api = createAPI(
   () => store.dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH)),
@@ -21,9 +20,6 @@ const store = createStore(
     applyMiddleware(thunk.withExtraArgument(api)),
   ),
 );
-
-store.dispatch(fetchMovies());
-store.dispatch(fetchPromoMovie());
 
 ReactDOM.render(
   <React.StrictMode>

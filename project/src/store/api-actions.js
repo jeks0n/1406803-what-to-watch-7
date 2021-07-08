@@ -20,17 +20,13 @@ export const fetchSimilarMovies = (movieId) => (dispatch, _getState, api) => (
     })
 );
 
-export const fetchCurrentMovie = (movieId) => (dispatch, getState, api) => {
-  if (!getState.isMoviesLoaded) {
-    return api.get(APIRouteCreator.getCurrentMovie(movieId))
-      .then(({data}) => {
-        const movie = Adapter.adaptMovieToClient(data);
-        dispatch(ActionCreator.loadCurrentMovie(movie));
-      });
-  }
-
-  return dispatch(ActionCreator.getCurrentMovie(movieId));
-};
+export const fetchCurrentMovie = (movieId) => (dispatch, getState, api) => (
+  api.get(APIRouteCreator.getCurrentMovie(movieId))
+    .then(({data}) => {
+      const movie = Adapter.adaptMovieToClient(data);
+      dispatch(ActionCreator.loadCurrentMovie(movie));
+    })
+);
 
 export const fetchCurrentMovieComments = (movieId) => (dispatch, _getState, api) => (
   api.get(APIRouteCreator.getCurrentMovieComments(movieId))

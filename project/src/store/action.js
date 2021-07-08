@@ -10,7 +10,6 @@ export const ActionType = {
   RESET_SIMILAR_MOVIES: 'movies/resetSimilarMovies',
   RESET_CURRENT_MOVIE_COMMENTS: 'movies/resetCurrentMovieComments',
   RESET_IS_CURRENT_MOVIE_COMMENTS_LOADED: 'movies/resetIsCommentsLoaded',
-  GET_CURRENT_MOVIE: 'movies/getCurrentMovie',
   TOGGLE_SHOW_MORE_BUTTON_VISIBILITY: 'movies/toggleShowMoreButtonVisibility',
   CHECK_SHOW_MORE_BUTTON_VISIBILITY: 'movies/checkShowMoreButtonVisibility',
   LOAD_MOVIES: 'data/loadMovies',
@@ -80,10 +79,6 @@ export const ActionCreator = {
   loadCurrentMovieComments: (comments) => ({
     type: ActionType.LOAD_CURRENT_MOVIE_COMMENTS,
     payload: comments,
-  }),
-  getCurrentMovie: (id) => ({
-    type: ActionType.GET_CURRENT_MOVIE,
-    payload: id,
   }),
   getGenres: () => ({
     type: ActionType.GET_GENRES,
