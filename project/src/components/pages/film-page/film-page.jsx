@@ -32,6 +32,7 @@ function FilmPage(props) {
     getCurrentMovie(params.id);
     getCurrentMovieComments(params.id);
     getSimilarMovies(params.id);
+
     return resetState;
   }, [resetState, getCurrentMovie, getCurrentMovieComments, getSimilarMovies, params]);
 

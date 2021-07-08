@@ -21,6 +21,7 @@ function PlayerPage(props) {
   useEffect(() => {
     resetState();
     getCurrentMovie(params.id);
+
     return resetState;
   }, [getCurrentMovie, resetState, params]);
 
