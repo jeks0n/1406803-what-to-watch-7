@@ -1,17 +1,14 @@
 import React from 'react';
-import {useParams} from 'react-router-dom';
 import Logo from '../../UI/logo/logo';
 import ReviewForm from './review-form/review-form';
-import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
 
 function AddReviewPage(props) {
-  const params = useParams();
-  const [{
+  const {
     name,
     backgroundImage,
     posterImage,
-  }] = props.movies.filter((movie) => movie.id === +params.id);
+  } = props.movie;
 
   return (
     <section className="film-card film-card--full">
@@ -62,7 +59,7 @@ function AddReviewPage(props) {
 }
 
 AddReviewPage.propTypes = {
-  movies: PropTypes.arrayOf(movieProp),
+  movie: movieProp,
 };
 
 export default AddReviewPage;

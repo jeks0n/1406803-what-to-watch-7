@@ -4,21 +4,23 @@ import FilmDetails from './film-details/film-details';
 import FilmReviews from './film-reviews/film-reviews';
 import {MovieTab} from '../../../../const';
 import movieProp from '../../../../utils/movie.prop';
+import PropTypes from 'prop-types';
+import commentProp from '../../../../utils/comment.prop';
 
-const getComponentByType = (type, movie) => {
+const getComponentByType = (type, movie, comments, isCommentsLoaded) => {
   switch (type) {
     case MovieTab.OVERVIEW:
       return <FilmOverview movie={movie} />;
     case MovieTab.DETAILS:
       return <FilmDetails movie={movie} />;
     case MovieTab.REVIEWS:
-      return <FilmReviews movie={movie} />;
+      return <FilmReviews comments={comments} isCommentsLoaded={isCommentsLoaded} />;
     default:
       return <p>There is no information yet</p>;
   }
 };
 
-function FilmTabs({movie}) {
+function FilmTabs({movie, comments, isCommentsLoaded}) {
   const [activeTab, setActiveTab] = useState(MovieTab.OVERVIEW);
   return (
     <div className="film-card__desc">
@@ -37,13 +39,15 @@ function FilmTabs({movie}) {
         </ul>
       </nav>
 
-      {getComponentByType(activeTab, movie)}
+      {getComponentByType(activeTab, movie, comments, isCommentsLoaded)}
     </div>
   );
 }
 
 FilmTabs.propTypes = {
-  movie: movieProp,
+  movie: movieProp.isRequired,
+  comments: PropTypes.arrayOf(commentProp),
+  isCommentsLoaded: PropTypes.bool.isRequired,
 };
 
 export default FilmTabs;
