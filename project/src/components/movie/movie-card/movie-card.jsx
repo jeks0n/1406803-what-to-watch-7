@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
-import VideoPlayer from '../../video-player/video-player';
+import VideoPlayer from '../../UI/video-player/video-player';
 
 const PLAY_MOVIE_DELAY = 1000;
 

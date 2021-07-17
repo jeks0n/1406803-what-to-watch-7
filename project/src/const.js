@@ -25,9 +25,12 @@ export const AuthorizationStatus = {
 };
 
 export const APIRouteCreator = {
+  changeMovieMyListStatus: (id, status) => `/favorite/${id}/${status}`,
   getMovies: () => '/films',
   getPromoMovie: () => '/promo',
   getSimilarMovies: (id) => `/films/${id}/similar`,
+  getMyMovies: () => '/favorite',
+  getFavoriteMovies: () => '/favorite',
   getCurrentMovie: (id) => `/films/${id}`,
   getCurrentMovieComments: (id) => `/comments/${id}`,
   login: () => '/login',

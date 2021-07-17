@@ -1,6 +1,7 @@
 import React from 'react';
-import movieProp from '../../../utils/movie.prop';
 import PlayButton from '../../UI/play-button/play-button';
+import MyListButton from '../../UI/my-list-button/my-list-button';
+import movieProp from '../../../utils/movie.prop';
 
 function PromoMovie(props) {
   const {movie} = props;
@@ -33,12 +34,7 @@ function PromoMovie(props) {
 
             <div className="film-card__buttons">
               <PlayButton movie={movie}/>
-              <button className="btn btn--list film-card__button" type="button">
-                <svg viewBox="0 0 19 20" width="19" height="20">
-                  <use xlinkHref="#add"></use>
-                </svg>
-                <span>My list</span>
-              </button>
+              <MyListButton movie={movie} />
             </div>
           </div>
         </div>
@@ -48,7 +44,7 @@ function PromoMovie(props) {
 }
 
 PromoMovie.propTypes = {
-  movie: movieProp,
+  movie: movieProp.isRequired,
 };
 
 export default PromoMovie;
