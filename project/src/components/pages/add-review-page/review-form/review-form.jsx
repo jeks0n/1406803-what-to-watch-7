@@ -36,7 +36,6 @@ function ReviewForm() {
     );
   });
 
-
   const handleSubmit = (evt) => {
     evt.preventDefault();
   };

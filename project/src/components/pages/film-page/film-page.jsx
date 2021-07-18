@@ -2,15 +2,17 @@ import React, {useEffect} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Logo from '../../UI/logo/logo';
+import UserBlock from '../../UI/user-block/user-block';
 import MovieList from '../../movie/movie-list/movie-list';
-import PropTypes from 'prop-types';
-import movieProp from '../../../utils/movie.prop';
-import commentProp from '../../../utils/comment.prop';
 import PlayButton from '../../UI/play-button/play-button';
+import MyListButton from '../../UI/my-list-button/my-list-button';
 import FilmTabs from './film-tabs/film-tabs';
 import {fetchCurrentMovie, fetchCurrentMovieComments, fetchSimilarMovies} from '../../../store/api-actions';
 import LoadingScreen from '../../UI/loading-screen/loading-screen';
 import {ActionCreator} from '../../../store/action';
+import PropTypes from 'prop-types';
+import movieProp from '../../../utils/movie.prop';
+import commentProp from '../../../utils/comment.prop';
 
 function FilmPage(props) {
   const params = useParams();
@@ -63,17 +65,7 @@ function FilmPage(props) {
 
           <header className="page-header film-card__head">
             <Logo />
-
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a href="/#" className="user-block__link">Sign out</a>
-              </li>
-            </ul>
+            <UserBlock />
           </header>
 
           <div className="film-card__wrap">
@@ -86,12 +78,7 @@ function FilmPage(props) {
 
               <div className="film-card__buttons">
                 <PlayButton movie={currentMovie}/>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
+                <MyListButton movie={currentMovie} />
                 <Link href="add-review.html"
                   className="btn film-card__button"
                   to={`/films/${id}/review`}

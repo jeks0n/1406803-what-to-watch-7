@@ -6,7 +6,7 @@ import {
   MAX_GENRES_TABS_COUNT
 } from '../const';
 import {ActionType} from './action';
-import {getGenres} from '../utils/movie';
+import {changeIsFavoriteStatus, getGenres} from '../utils/movie';
 
 const initialState = {
   currentGenre: ALL_GENRES,
@@ -14,24 +14,54 @@ const initialState = {
   movies: [],
   initialMovies: [],
   similarMovies: [],
+  myMovies: [],
   currentMovie: {},
   currentMovieComments: [],
   promoMovie: {},
   numberOfVisibleMovies: DEFAULT_NUMBER_OF_VISIBLE_MOVIES,
   isShowMoreButtonVisible: false,
   authorizationStatus: AuthorizationStatus.UNKNOWN,
+  serverResponseAuthorizationError: '',
+  hasServerResponseAuthorizationError: false,
+  userEmail: '',
   isMoviesLoaded: false,
   isCurrentMovieLoaded: false,
   isCurrentMovieCommentsLoaded: false,
   isSimilarMoviesLoaded: false,
+  isMyMoviesLoaded: false,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionType.SET_GENRE_TO_FILTER:
+    case ActionType.SET_CURRENT_GENRE:
       return {
         ...state,
         currentGenre: action.payload,
+      };
+    case ActionType.SET_USER_EMAIL:
+      return {
+        ...state,
+        userEmail: action.payload,
+      };
+    case ActionType.SET_SERVER_AUTHORIZATION_ERROR:
+      return {
+        ...state,
+        serverResponseAuthorizationError: action.payload,
+      };
+    case ActionType.SET_HAS_SERVER_AUTHORIZATION_ERROR:
+      return {
+        ...state,
+        hasServerResponseAuthorizationError: action.payload,
+      };
+    case ActionType.RESET_SERVER_AUTHORIZATION_ERROR:
+      return {
+        ...state,
+        serverResponseAuthorizationError: '',
+      };
+    case ActionType.RESET_HAS_SERVER_AUTHORIZATION_ERROR:
+      return {
+        ...state,
+        hasServerResponseAuthorizationError: false,
       };
     case ActionType.FILTER_MOVIES_BY_GENRE:
       return action.payload === ALL_GENRES ?
@@ -75,6 +105,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         similarMovies: [],
       };
+    case ActionType.RESET_MY_MOVIES:
+      return {
+        ...state,
+        myMovies: [],
+      };
+    case ActionType.RESET_IS_MY_MOVIES_LOADED:
+      return {
+        ...state,
+        isMyMoviesLoaded: true,
+      };
     case ActionType.RESET_CURRENT_MOVIE_COMMENTS:
       return {
         ...state,
@@ -112,6 +152,18 @@ const reducer = (state = initialState, action) => {
         ...state,
         similarMovies: action.payload.slice(0, DEFAULT_NUMBER_OF_SIMILAR_MOVIES),
         isSimilarMoviesLoaded: true,
+      };
+    case ActionType.LOAD_MY_MOVIES:
+      return {
+        ...state,
+        myMovies: action.payload,
+        isMyMoviesLoaded: true,
+      };
+    case ActionType.CHANGE_MOVIE_MY_LIST_STATUS:
+      return {
+        ...state,
+        currentMovie: changeIsFavoriteStatus(state.currentMovie, action.payload.id, action.payload.isFavorite),
+        promoMovie: changeIsFavoriteStatus(state.promoMovie, action.payload.id, action.payload.isFavorite),
       };
     case ActionType.LOAD_CURRENT_MOVIE:
       return {

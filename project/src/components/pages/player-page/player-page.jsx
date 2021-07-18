@@ -10,6 +10,7 @@ import LoadingScreen from '../../UI/loading-screen/loading-screen';
 
 function PlayerPage(props) {
   const params = useParams();
+
   const history = useHistory();
   const {
     getCurrentMovie,

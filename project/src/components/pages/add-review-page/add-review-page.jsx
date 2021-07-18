@@ -1,14 +1,44 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useParams} from 'react-router-dom';
+import {connect} from 'react-redux';
 import Logo from '../../UI/logo/logo';
+import UserBlock from '../../UI/user-block/user-block';
 import ReviewForm from './review-form/review-form';
 import movieProp from '../../../utils/movie.prop';
+import PropTypes from 'prop-types';
+import {fetchCurrentMovie, fetchCurrentMovieComments} from '../../../store/api-actions';
+import {ActionCreator} from '../../../store/action';
+import LoadingScreen from '../../UI/loading-screen/loading-screen';
 
 function AddReviewPage(props) {
+  const params = useParams();
+  const {
+    currentMovie,
+    getCurrentMovie,
+    isCurrentMovieLoaded,
+    getCurrentMovieComments,
+    resetState,
+  } = props;
+
+  useEffect(() => {
+    resetState();
+    getCurrentMovie(params.id);
+    getCurrentMovieComments(params.id);
+
+    return resetState;
+  }, [resetState, getCurrentMovie, getCurrentMovieComments, params]);
+
+  if (!isCurrentMovieLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   const {
     name,
     backgroundImage,
     posterImage,
-  } = props.movie;
+  } = currentMovie;
 
   return (
     <section className="film-card film-card--full">
@@ -33,16 +63,7 @@ function AddReviewPage(props) {
             </ul>
           </nav>
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a href="/#" className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          <UserBlock />
         </header>
 
         <div className="film-card__poster film-card__poster--small">
@@ -59,7 +80,30 @@ function AddReviewPage(props) {
 }
 
 AddReviewPage.propTypes = {
-  movie: movieProp,
+  getCurrentMovie: PropTypes.func.isRequired,
+  getCurrentMovieComments: PropTypes.func.isRequired,
+  resetState: PropTypes.func.isRequired,
+  currentMovie: movieProp,
+  isCurrentMovieLoaded: PropTypes.bool.isRequired,
 };
 
-export default AddReviewPage;
+const mapStateToProps = (state) => ({
+  currentMovie: state.currentMovie,
+  isCurrentMovieLoaded: state.isCurrentMovieLoaded,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getCurrentMovie(id) {
+    dispatch(fetchCurrentMovie(id));
+  },
+  getCurrentMovieComments(id) {
+    dispatch(fetchCurrentMovieComments(id));
+  },
+  resetState() {
+    dispatch(ActionCreator.resetCurrentMovie());
+    dispatch(ActionCreator.resetIsCurrentMovieLoaded());
+  },
+});
+
+export {AddReviewPage};
+export default connect(mapStateToProps, mapDispatchToProps)(AddReviewPage);

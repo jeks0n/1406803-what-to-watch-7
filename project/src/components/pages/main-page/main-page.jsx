@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import Logo from '../../UI/logo/logo';
+import UserBlock from '../../UI/user-block/user-block';
 import PromoMovieCard from '../../movie/promo-movie/promo-movie';
 import GenreTabs from './genre-tabs/genre-tabs';
 import MovieList from '../../movie/movie-list/movie-list';
@@ -37,17 +38,7 @@ function MainPage(props) {
 
         <header className="page-header film-card__head">
           <Logo />
-
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a href="/#" className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          <UserBlock />
         </header>
 
         <PromoMovieCard movie={promoMovie} />
