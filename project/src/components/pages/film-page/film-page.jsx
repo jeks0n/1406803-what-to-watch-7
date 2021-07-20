@@ -13,10 +13,12 @@ import {ActionCreator} from '../../../store/action';
 import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
 import commentProp from '../../../utils/comment.prop';
+import {AppRouteCreator, AuthorizationStatus} from '../../../const';
 
 function FilmPage(props) {
   const params = useParams();
   const {
+    authorizationStatus,
     currentMovie,
     getCurrentMovie,
     isCurrentMovieLoaded,
@@ -79,12 +81,13 @@ function FilmPage(props) {
               <div className="film-card__buttons">
                 <PlayButton movie={currentMovie}/>
                 <MyListButton movie={currentMovie} />
+                {authorizationStatus === AuthorizationStatus.AUTH &&
                 <Link href="add-review.html"
                   className="btn film-card__button"
-                  to={`/films/${id}/review`}
+                  to={`${AppRouteCreator.getAddReview(id)}`}
                   movie={currentMovie}
                 >Add review
-                </Link>
+                </Link>}
               </div>
             </div>
           </div>
@@ -121,6 +124,7 @@ function FilmPage(props) {
 }
 
 FilmPage.propTypes = {
+  authorizationStatus: PropTypes.string.isRequired,
   getCurrentMovie: PropTypes.func.isRequired,
   getCurrentMovieComments: PropTypes.func.isRequired,
   getSimilarMovies: PropTypes.func.isRequired,
@@ -134,6 +138,7 @@ FilmPage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  authorizationStatus: state.authorizationStatus,
   currentMovie: state.currentMovie,
   currentMovieComments: state.currentMovieComments,
   similarMovies: state.similarMovies,

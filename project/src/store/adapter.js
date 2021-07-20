@@ -1,4 +1,14 @@
 export const Adapter = {
+  adaptAuthentication: (authentication) => ({
+    ...authentication,
+    avatar: authentication.avatar_url,
+  }),
+  adaptCommentToClient: (comment) => ({
+    ...comment,
+    date: comment.date !== null
+      ? new Date(comment.date)
+      : comment.date,
+  }),
   adaptMovieToClient: (movie) => ({
     id: movie.id,
     name: movie.name,
@@ -17,11 +27,5 @@ export const Adapter = {
     genre: movie.genre,
     released: movie.released,
     isFavorite: movie.is_favorite,
-  }),
-  adaptCommentToClient: (comment) => ({
-    ...comment,
-    date: comment.date !== null
-      ? new Date(comment.date)
-      : comment.date,
   }),
 };

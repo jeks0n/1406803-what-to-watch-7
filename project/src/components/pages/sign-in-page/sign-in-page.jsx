@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import Logo from '../../UI/logo/logo';
 import {login} from '../../../store/api-actions';
 import PropTypes from 'prop-types';
-import {AppRoute, AuthorizationStatus} from '../../../const';
+import {AppRouteCreator, AuthorizationStatus} from '../../../const';
 import {validateEmail, checkInputIsEmpty} from '../../../utils/user';
 import {ActionCreator} from '../../../store/action';
 
@@ -21,7 +21,7 @@ function SignInPage(props) {
     authorizationStatus,
     hasServerResponseAuthorizationError,
     serverResponseAuthorizationError,
-    resetServerAuthorizationErrorInfo,
+    resetServerAuthorizationError,
   } = props;
   const [isFormTouched, setIsFormTouched] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -53,11 +53,11 @@ function SignInPage(props) {
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.AUTH) {
-      history.push({pathname: AppRoute.MAIN});
+      history.push({pathname: AppRouteCreator.getMain()});
     }
 
-    return resetServerAuthorizationErrorInfo;
-  }, [authorizationStatus, history, resetServerAuthorizationErrorInfo]);
+    return resetServerAuthorizationError;
+  }, [authorizationStatus, history, resetServerAuthorizationError]);
 
   const isFormInvalid = emailInputHasError || passwordInputHasError;
 
@@ -145,7 +145,7 @@ SignInPage.propTypes = {
   authorizationStatus: PropTypes.string.isRequired,
   hasServerResponseAuthorizationError: PropTypes.bool.isRequired,
   serverResponseAuthorizationError: PropTypes.string.isRequired,
-  resetServerAuthorizationErrorInfo: PropTypes.func.isRequired,
+  resetServerAuthorizationError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -158,7 +158,7 @@ const mapDispatchToProps = (dispatch) => ({
   onSubmit(formData) {
     dispatch(login(formData));
   },
-  resetServerAuthorizationErrorInfo() {
+  resetServerAuthorizationError() {
     dispatch(ActionCreator.resetServerAuthorizationError());
     dispatch(ActionCreator.resetHasServerAuthorizationError());
   },

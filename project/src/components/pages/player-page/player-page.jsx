@@ -3,7 +3,7 @@ import {useParams, useHistory} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import movieProp from '../../../utils/movie.prop';
-import {AppRoute} from '../../../const';
+import {AppRouteCreator} from '../../../const';
 import {fetchCurrentMovie} from '../../../store/api-actions';
 import {ActionCreator} from '../../../store/action';
 import LoadingScreen from '../../UI/loading-screen/loading-screen';
@@ -41,7 +41,7 @@ function PlayerPage(props) {
           return history.goBack();
         }
 
-        history.push(AppRoute.MAIN);
+        history.push(AppRouteCreator.getMain());
       }}
       >Exit
       </button>

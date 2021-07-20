@@ -1,10 +1,11 @@
-export const AppRoute = {
-  ADD_REVIEW: '/films/:id/review',
-  FILM: '/films/:id',
-  MAIN: '/',
-  MY_LIST: '/mylist',
-  PLAYER: '/player/:id',
-  SIGN_IN: '/login',
+export const AppRouteCreator = {
+  getAddReview: (id = ':id') => `/films/${id}/review`,
+  getFilm: (id = ':id') => `/films/${id}`,
+  getMain: () => '/',
+  getMyList: () => '/mylist',
+  getPlayer: (id = ':id') => `/player/${id}`,
+  getSignIn: () => '/login',
+  getPageNotFound: () => '/page-not-found',
 };
 
 export const ALL_GENRES = 'All genres';
@@ -33,6 +34,7 @@ export const APIRouteCreator = {
   getFavoriteMovies: () => '/favorite',
   getCurrentMovie: (id) => `/films/${id}`,
   getCurrentMovieComments: (id) => `/comments/${id}`,
+  addComment: (id) => `/comments/${id}`,
   login: () => '/login',
   logout: () => '/logout',
 };

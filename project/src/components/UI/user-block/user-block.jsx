@@ -1,12 +1,18 @@
 import React from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {AppRoute, AuthorizationStatus} from '../../../const';
+import {AppRouteCreator, AuthorizationStatus} from '../../../const';
 import {logout} from '../../../store/api-actions';
 import PropTypes from 'prop-types';
 
 function UserBlock(props) {
-  const {authorizationStatus, userEmail, logoutUser} = props;
+  const {
+    authorizationStatus,
+    userAvatar,
+    userEmail,
+    userName,
+    logoutUser,
+  } = props;
 
   const history = useHistory();
 
@@ -15,14 +21,13 @@ function UserBlock(props) {
       <li className="user-block__item">
         <div className="user-block__avatar">
           <img
-            src="img/avatar.jpg"
-            alt="User avatar"
+            src={userAvatar}
+            alt={`${userName}: ${userEmail}`}
             width="63"
             height="63"
-            onClick={() => history.push({pathname: AppRoute.MY_LIST})}
+            onClick={() => history.push({pathname: AppRouteCreator.getMyList()})}
           />
         </div>
-        <span>{userEmail}</span>
       </li>
       <li className="user-block__item">
         <a href="/#"
@@ -39,7 +44,7 @@ function UserBlock(props) {
 
   const userBlockUnauthorized = (
     <div className="user-block">
-      <Link to={AppRoute.SIGN_IN} className="user-block__link">Sign in</Link>
+      <Link to={AppRouteCreator.getSignIn()} className="user-block__link">Sign in</Link>
     </div>
   );
 
@@ -52,12 +57,17 @@ function UserBlock(props) {
 
 UserBlock.propTypes = {
   authorizationStatus: PropTypes.string.isRequired,
+  userAvatar: PropTypes.string.isRequired,
+  userEmail: PropTypes.string.isRequired,
+  userName: PropTypes.string.isRequired,
   logoutUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   authorizationStatus: state.authorizationStatus,
+  userAvatar: state.userAvatar,
   userEmail: state.userEmail,
+  userName: state.userName,
 });
 
 const mapDispatchToProps = (dispatch) => ({
