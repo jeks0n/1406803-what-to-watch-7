@@ -15,8 +15,8 @@ function AddReviewPage(props) {
   const {
     currentMovie,
     getCurrentMovie,
-    isCurrentMovieLoaded,
     getCurrentMovieComments,
+    isCurrentMovieLoaded,
     resetState,
   } = props;
 
@@ -35,6 +35,7 @@ function AddReviewPage(props) {
   }
 
   const {
+    id,
     name,
     backgroundImage,
     posterImage,
@@ -72,7 +73,7 @@ function AddReviewPage(props) {
       </div>
 
       <div className="add-review">
-        <ReviewForm />
+        <ReviewForm movieId={id} />
       </div>
 
     </section>
@@ -83,7 +84,7 @@ AddReviewPage.propTypes = {
   getCurrentMovie: PropTypes.func.isRequired,
   getCurrentMovieComments: PropTypes.func.isRequired,
   resetState: PropTypes.func.isRequired,
-  currentMovie: movieProp,
+  currentMovie: movieProp.isRequired,
   isCurrentMovieLoaded: PropTypes.bool.isRequired,
 };
 

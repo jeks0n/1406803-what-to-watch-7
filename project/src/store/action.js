@@ -2,7 +2,9 @@ export const ActionType = {
   CHANGE_MOVIE_MY_LIST_STATUS: 'movies/changeMyListStatus',
   GET_GENRES: 'movies/getGenres',
   SET_CURRENT_GENRE: 'movies/setCurrentGenre',
+  SET_USER_AVATAR: 'user/setAvatar',
   SET_USER_EMAIL: 'user/setEmail',
+  SET_USER_NAME: 'user/setName',
   FILTER_MOVIES_BY_GENRE: 'movies/filterMoviesByGenre',
   INCREASE_NUMBER_OF_VISIBLE_MOVIES: 'movies/increaseNumberOfVisibleMovies',
   RESET_NUMBER_OF_VISIBLE_MOVIES: 'movies/resetNumberOfVisibleMovies',
@@ -12,12 +14,18 @@ export const ActionType = {
   RESET_MY_MOVIES: 'movies/resetMyMovies',
   RESET_IS_MY_MOVIES_LOADED: 'movies/resetIsMyMoviesLoaded',
   RESET_SIMILAR_MOVIES: 'movies/resetSimilarMovies',
+  ADD_CURRENT_MOVIE_COMMENT: 'movies/addCurrentMovieComment',
   RESET_CURRENT_MOVIE_COMMENTS: 'movies/resetCurrentMovieComments',
   RESET_IS_CURRENT_MOVIE_COMMENTS_LOADED: 'movies/resetIsCurrentMovieCommentsLoaded',
-  SET_SERVER_AUTHORIZATION_ERROR: 'user/setServerAuthorizationError',
-  RESET_SERVER_AUTHORIZATION_ERROR: 'user/resetServerAuthorizationError',
-  SET_HAS_SERVER_AUTHORIZATION_ERROR: 'user/setHasServerAuthorizationError',
-  RESET_HAS_SERVER_AUTHORIZATION_ERROR: 'user/resetIsServerAuthorizationError',
+  SET_SERVER_AUTHORIZATION_ERROR: 'data/setServerAuthorizationError',
+  RESET_SERVER_AUTHORIZATION_ERROR: 'data/resetServerAuthorizationError',
+  SET_HAS_SERVER_AUTHORIZATION_ERROR: 'data/setHasServerAuthorizationError',
+  RESET_HAS_SERVER_AUTHORIZATION_ERROR: 'data/resetHasServerAuthorizationError',
+  SET_SERVER_RESPONSE_ADD_COMMENT_ERROR: 'data/setServerResponseAddCommentError',
+  RESET_SERVER_RESPONSE_ADD_COMMENT_ERROR: 'data/resetServerResponseAddCommentError',
+  SET_HAS_SERVER_RESPONSE_ADD_COMMENT_ERROR: 'data/setHasServerResponseAddCommentError',
+  RESET_HAS_SERVER_RESPONSE_ADD_COMMENT_ERROR: 'data/resetHasServerResponseAddCommentError',
+  SET_IS_WAITING_SERVER_RESPONSE_ADD_COMMENT: 'data/setIsWaitingServerResponseAddComment',
   TOGGLE_SHOW_MORE_BUTTON_VISIBILITY: 'movies/toggleShowMoreButtonVisibility',
   CHECK_SHOW_MORE_BUTTON_VISIBILITY: 'movies/checkShowMoreButtonVisibility',
   LOAD_MOVIES: 'data/loadMovies',
@@ -32,13 +40,24 @@ export const ActionType = {
 };
 
 export const ActionCreator = {
+  addComment: () => ({
+    type: ActionType.ADD_CURRENT_MOVIE_COMMENT,
+  }),
   setCurrentGenre: (genre) => ({
     type: ActionType.SET_CURRENT_GENRE,
     payload: genre,
   }),
+  setUserAvatar: (avatar) => ({
+    type: ActionType.SET_USER_AVATAR,
+    payload: avatar,
+  }),
   setUserEmail: (email) => ({
     type: ActionType.SET_USER_EMAIL,
     payload: email,
+  }),
+  setUserName: (name) => ({
+    type: ActionType.SET_USER_NAME,
+    payload: name,
   }),
   filterMoviesByGenre: (genre) => ({
     type: ActionType.FILTER_MOVIES_BY_GENRE,
@@ -119,8 +138,26 @@ export const ActionCreator = {
   resetServerAuthorizationError: (error) => ({
     type: ActionType.RESET_SERVER_AUTHORIZATION_ERROR,
   }),
-  resetHasServerAuthorizationError: (status) => ({
+  resetHasServerAuthorizationError: () => ({
     type: ActionType.RESET_HAS_SERVER_AUTHORIZATION_ERROR,
+  }),
+  setServerResponseAddCommentError: (error) => ({
+    type: ActionType.SET_SERVER_RESPONSE_ADD_COMMENT_ERROR,
+    payload: error,
+  }),
+  resetServerResponseAddCommentError: () => ({
+    type: ActionType.RESET_SERVER_RESPONSE_ADD_COMMENT_ERROR,
+  }),
+  setHasServerResponseAddCommentError: (status) => ({
+    type: ActionType.SET_HAS_SERVER_RESPONSE_ADD_COMMENT_ERROR,
+    payload: status,
+  }),
+  resetHasServerResponseAddCommentError: () => ({
+    type: ActionType.RESET_HAS_SERVER_RESPONSE_ADD_COMMENT_ERROR,
+  }),
+  setIsWaitingServerResponseAddComment: (status) => ({
+    type: ActionType.SET_IS_WAITING_SERVER_RESPONSE_ADD_COMMENT,
+    payload: status,
   }),
   getGenres: () => ({
     type: ActionType.GET_GENRES,

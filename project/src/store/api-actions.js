@@ -1,5 +1,5 @@
 import {ActionCreator} from './action';
-import {AuthorizationStatus, APIRouteCreator, AppRoute} from '../const';
+import {AuthorizationStatus, APIRouteCreator, AppRouteCreator} from '../const';
 import {Adapter} from './adapter';
 
 export const fetchMovies = () => (dispatch, _getState, api) => (
@@ -41,6 +41,7 @@ export const fetchCurrentMovie = (movieId) => (dispatch, getState, api) => (
       const movie = Adapter.adaptMovieToClient(data);
       dispatch(ActionCreator.loadCurrentMovie(movie));
     })
+    .catch(() => dispatch(ActionCreator.redirectToRoute(AppRouteCreator.getPageNotFound())))
 );
 
 export const fetchCurrentMovieComments = (movieId) => (dispatch, _getState, api) => (
@@ -62,11 +63,20 @@ export const fetchPromoMovie = () => (dispatch, _getState, api) => (
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRouteCreator.login())
     .then(({data}) => {
-      dispatch(ActionCreator.setUserEmail(data.email));
+      const {
+        avatar,
+        email,
+        name,
+      } = Adapter.adaptAuthentication(data);
+      dispatch(ActionCreator.setUserEmail(email));
+      dispatch(ActionCreator.setUserAvatar(avatar));
+      dispatch(ActionCreator.setUserName(name));
       dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
     })
     .catch(() => {
       dispatch(ActionCreator.setUserEmail(''));
+      dispatch(ActionCreator.setUserAvatar(''));
+      dispatch(ActionCreator.setUserName(''));
       dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH));
     })
 );
@@ -74,16 +84,24 @@ export const checkAuth = () => (dispatch, _getState, api) => (
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
   api.post(APIRouteCreator.login(), {email, password})
     .then(({data}) => {
-      dispatch(ActionCreator.setUserEmail(data.email));
-      localStorage.setItem('token', data.token);
+      const {
+        avatar,
+        name,
+        email: userEmail,
+        token,
+      } = Adapter.adaptAuthentication(data);
+      dispatch(ActionCreator.setUserAvatar(avatar));
+      dispatch(ActionCreator.setUserName(name));
+      dispatch(ActionCreator.setUserEmail(userEmail));
+      localStorage.setItem('token', token);
       api.interceptors.request.use((config) => {
-        config.headers['x-token'] = data.token;
+        config.headers['x-token'] = token;
 
         return config;
       });
     })
     .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
-    .then(() => dispatch(ActionCreator.redirectToRoute(AppRoute.MAIN)))
+    .then(() => dispatch(ActionCreator.redirectToRoute(AppRouteCreator.getMain())))
     .catch((error) => {
       dispatch(ActionCreator.setHasServerAuthorizationError(true));
       dispatch(ActionCreator.setServerAuthorizationError(error.response.data.error));
@@ -94,7 +112,24 @@ export const logout = () => (dispatch, _getState, api) => (
   api.delete(APIRouteCreator.logout())
     .then(() => {
       dispatch(ActionCreator.setUserEmail(''));
+      dispatch(ActionCreator.setUserAvatar(''));
+      dispatch(ActionCreator.setUserName(''));
       localStorage.removeItem('token');
     })
     .then(() => dispatch(ActionCreator.logout()))
 );
+
+export const addComment = (movieId, {rating, comment}) => (dispatch, _getState, api) => {
+  dispatch(ActionCreator.setIsWaitingServerResponseAddComment(true));
+
+  return api.post(APIRouteCreator.addComment(movieId), {rating, comment})
+    .then(() => {
+      dispatch(ActionCreator.setIsWaitingServerResponseAddComment(false));
+      dispatch(ActionCreator.redirectToRoute(AppRouteCreator.getFilm(movieId)));
+    })
+    .catch((error) => {
+      dispatch(ActionCreator.setIsWaitingServerResponseAddComment(false));
+      dispatch(ActionCreator.setHasServerResponseAddCommentError(true));
+      dispatch(ActionCreator.setServerResponseAddCommentError(error.response.data.error));
+    });
+};

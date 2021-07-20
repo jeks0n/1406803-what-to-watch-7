@@ -23,7 +23,12 @@ const initialState = {
   authorizationStatus: AuthorizationStatus.UNKNOWN,
   serverResponseAuthorizationError: '',
   hasServerResponseAuthorizationError: false,
+  serverResponseAddCommentError: '',
+  hasServerResponseAddCommentError: false,
+  isWaitingServerResponseAddComment: false,
+  userAvatar: '',
   userEmail: '',
+  userName: '',
   isMoviesLoaded: false,
   isCurrentMovieLoaded: false,
   isCurrentMovieCommentsLoaded: false,
@@ -38,10 +43,20 @@ const reducer = (state = initialState, action) => {
         ...state,
         currentGenre: action.payload,
       };
+    case ActionType.SET_USER_AVATAR:
+      return {
+        ...state,
+        userAvatar: action.payload,
+      };
     case ActionType.SET_USER_EMAIL:
       return {
         ...state,
         userEmail: action.payload,
+      };
+    case ActionType.SET_USER_NAME:
+      return {
+        ...state,
+        userName: action.payload,
       };
     case ActionType.SET_SERVER_AUTHORIZATION_ERROR:
       return {
@@ -62,6 +77,31 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         hasServerResponseAuthorizationError: false,
+      };
+    case ActionType.SET_SERVER_RESPONSE_ADD_COMMENT_ERROR:
+      return {
+        ...state,
+        serverResponseAddCommentError: action.payload,
+      };
+    case ActionType.RESET_SERVER_RESPONSE_ADD_COMMENT_ERROR:
+      return {
+        ...state,
+        serverResponseAddCommentError: '',
+      };
+    case ActionType.SET_HAS_SERVER_RESPONSE_ADD_COMMENT_ERROR:
+      return {
+        ...state,
+        hasServerResponseAddCommentError: action.payload,
+      };
+    case ActionType.RESET_HAS_SERVER_RESPONSE_ADD_COMMENT_ERROR:
+      return {
+        ...state,
+        hasServerResponseAddCommentError: false,
+      };
+    case ActionType.SET_IS_WAITING_SERVER_RESPONSE_ADD_COMMENT:
+      return {
+        ...state,
+        isWaitingServerResponseAddComment: action.payload,
       };
     case ActionType.FILTER_MOVIES_BY_GENRE:
       return action.payload === ALL_GENRES ?
