@@ -13,7 +13,6 @@ function GenreTabs(props) {
   const setMoviesFilter = (genre) => {
     dispatch(setCurrentGenre(genre));
     dispatch(resetNumberOfVisibleMovies());
-    // dispatch(checkShowMoreButtonVisibility());
   };
 
   return (
