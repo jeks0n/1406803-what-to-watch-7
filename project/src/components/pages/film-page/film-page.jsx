@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Link, useParams} from 'react-router-dom';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Logo from '../../UI/logo/logo';
 import UserBlock from '../../UI/user-block/user-block';
 import MovieList from '../../movie/movie-list/movie-list';
@@ -9,36 +9,40 @@ import MyListButton from '../../UI/my-list-button/my-list-button';
 import FilmTabs from './film-tabs/film-tabs';
 import {fetchCurrentMovie, fetchCurrentMovieComments, fetchSimilarMovies} from '../../../store/api-actions';
 import LoadingScreen from '../../UI/loading-screen/loading-screen';
-import {ActionCreator} from '../../../store/action';
-import PropTypes from 'prop-types';
-import movieProp from '../../../utils/movie.prop';
-import commentProp from '../../../utils/comment.prop';
 import {AppRouteCreator, AuthorizationStatus} from '../../../const';
+import {getAuthorizationStatus} from '../../../store/user/selectors';
+import {getCurrentMovie, getIsCurrentMovieLoaded, getIsSimilarMoviesLoaded, getSimilarMovies} from '../../../store/movies/selectors';
+import {getCurrentMovieComments, getIsCurrentMovieCommentsLoaded} from '../../../store/comments/selectors';
+import {resetCurrentMovie, resetSimilarMovies} from '../../../store/movies/action';
+import {resetCurrentMovieComments} from '../../../store/comments/action';
 
-function FilmPage(props) {
+function FilmPage() {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const currentMovie = useSelector(getCurrentMovie);
+  const isCurrentMovieLoaded = useSelector(getIsCurrentMovieLoaded);
+  const currentMovieComments = useSelector(getCurrentMovieComments);
+  const isCurrentMovieCommentsLoaded = useSelector(getIsCurrentMovieCommentsLoaded);
+  const similarMovies = useSelector(getSimilarMovies);
+  const isSimilarMoviesLoaded = useSelector(getIsSimilarMoviesLoaded);
+
   const params = useParams();
-  const {
-    authorizationStatus,
-    currentMovie,
-    getCurrentMovie,
-    isCurrentMovieLoaded,
-    getCurrentMovieComments,
-    currentMovieComments,
-    isCurrentMovieCommentsLoaded,
-    similarMovies,
-    getSimilarMovies,
-    isSimilarMoviesLoaded,
-    resetState,
-  } = props;
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    const resetState = () => {
+      dispatch(resetCurrentMovie());
+      dispatch(resetCurrentMovieComments());
+      dispatch(resetSimilarMovies());
+    };
+
     resetState();
-    getCurrentMovie(params.id);
-    getCurrentMovieComments(params.id);
-    getSimilarMovies(params.id);
+    dispatch(fetchCurrentMovie(params.id));
+    dispatch(fetchCurrentMovieComments(params.id));
+    dispatch(fetchSimilarMovies(params.id));
 
     return resetState;
-  }, [resetState, getCurrentMovie, getCurrentMovieComments, getSimilarMovies, params]);
+  }, [dispatch, params.id]);
 
   if (!isCurrentMovieLoaded) {
     return (
@@ -123,49 +127,4 @@ function FilmPage(props) {
   );
 }
 
-FilmPage.propTypes = {
-  authorizationStatus: PropTypes.string.isRequired,
-  getCurrentMovie: PropTypes.func.isRequired,
-  getCurrentMovieComments: PropTypes.func.isRequired,
-  getSimilarMovies: PropTypes.func.isRequired,
-  resetState: PropTypes.func.isRequired,
-  currentMovie: movieProp,
-  currentMovieComments: PropTypes.arrayOf(commentProp),
-  similarMovies: PropTypes.arrayOf(movieProp).isRequired,
-  isCurrentMovieLoaded: PropTypes.bool.isRequired,
-  isCurrentMovieCommentsLoaded: PropTypes.bool.isRequired,
-  isSimilarMoviesLoaded: PropTypes.bool.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-  currentMovie: state.currentMovie,
-  currentMovieComments: state.currentMovieComments,
-  similarMovies: state.similarMovies,
-  isCurrentMovieLoaded: state.isCurrentMovieLoaded,
-  isCurrentMovieCommentsLoaded: state.isCurrentMovieCommentsLoaded,
-  isSimilarMoviesLoaded: state.isSimilarMoviesLoaded,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getCurrentMovie(id) {
-    dispatch(fetchCurrentMovie(id));
-  },
-  getCurrentMovieComments(id) {
-    dispatch(fetchCurrentMovieComments(id));
-  },
-  getSimilarMovies(id) {
-    dispatch(fetchSimilarMovies(id));
-  },
-  resetState() {
-    dispatch(ActionCreator.resetCurrentMovie());
-    dispatch(ActionCreator.resetIsCurrentMovieLoaded());
-    dispatch(ActionCreator.resetCurrentMovieComments());
-    dispatch(ActionCreator.resetIsCurrentMovieCommentsLoaded());
-    dispatch(ActionCreator.resetSimilarMovies());
-    dispatch(ActionCreator.resetIsSimilarMoviesLoaded());
-  },
-});
-
-export {FilmPage};
-export default connect(mapStateToProps, mapDispatchToProps)(FilmPage);
+export default FilmPage;

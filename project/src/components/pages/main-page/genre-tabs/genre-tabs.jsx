@@ -1,10 +1,21 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {ActionCreator} from '../../../../store/action';
-import PropTypes from 'prop-types';
+import {useSelector, useDispatch} from 'react-redux';
+import {getCurrentGenre, getGenres} from '../../../../store/movies/selectors';
+import {filterMoviesByGenre, setCurrentGenre} from '../../../../store/movies/action';
+import {checkShowMoreButtonVisibility, resetNumberOfVisibleMovies} from '../../../../store/movies/action';
 
 function GenreTabs(props) {
-  const {currentGenre, genres, filterMoviesByGenre} = props;
+  const currentGenre = useSelector(getCurrentGenre);
+  const genres = useSelector(getGenres);
+
+  const dispatch = useDispatch();
+
+  const setMoviesFilter = (genre) => {
+    dispatch(setCurrentGenre(genre));
+    dispatch(filterMoviesByGenre(genre));
+    dispatch(resetNumberOfVisibleMovies());
+    dispatch(checkShowMoreButtonVisibility());
+  };
 
   return (
     <ul className="catalog__genres-list">
@@ -14,7 +25,7 @@ function GenreTabs(props) {
             className="catalog__genres-link"
             onClick={(evt) => {
               evt.preventDefault();
-              filterMoviesByGenre(evt.target.text);
+              setMoviesFilter(evt.target.text);
             }}
           >{genre}
           </a>
@@ -24,25 +35,4 @@ function GenreTabs(props) {
   );
 }
 
-GenreTabs.propTypes = {
-  currentGenre: PropTypes.string.isRequired,
-  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
-  filterMoviesByGenre: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  currentGenre: state.currentGenre,
-  genres: state.genres,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  filterMoviesByGenre(genre) {
-    dispatch(ActionCreator.setCurrentGenre(genre));
-    dispatch(ActionCreator.filterMoviesByGenre(genre));
-    dispatch(ActionCreator.resetNumberOfVisibleMovies(genre));
-    dispatch(ActionCreator.checkShowMoreButtonVisibility());
-  },
-});
-
-export {GenreTabs};
-export default connect(mapStateToProps, mapDispatchToProps)(GenreTabs);
+export default GenreTabs;

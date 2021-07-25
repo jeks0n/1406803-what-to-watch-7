@@ -1,30 +1,34 @@
 import React, {useEffect} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
-import movieProp from '../../../utils/movie.prop';
+import {useSelector, useDispatch} from 'react-redux';
 import {AppRouteCreator} from '../../../const';
 import {fetchCurrentMovie} from '../../../store/api-actions';
-import {ActionCreator} from '../../../store/action';
 import LoadingScreen from '../../UI/loading-screen/loading-screen';
+import {resetCurrentMovie} from '../../../store/movies/action';
+import {resetCurrentMovieComments} from '../../../store/comments/action';
+import {getCurrentMovie, getIsCurrentMovieLoaded} from '../../../store/movies/selectors';
 
 function PlayerPage(props) {
+  const currentMovie = useSelector(getCurrentMovie);
+  const isCurrentMovieLoaded = useSelector(getIsCurrentMovieLoaded);
+
   const params = useParams();
 
+  const dispatch = useDispatch();
+
   const history = useHistory();
-  const {
-    getCurrentMovie,
-    resetState,
-    currentMovie,
-    isCurrentMovieLoaded,
-  } = props;
 
   useEffect(() => {
+    const resetState = () => {
+      dispatch(resetCurrentMovie());
+      dispatch(resetCurrentMovieComments());
+    };
+
     resetState();
-    getCurrentMovie(params.id);
+    dispatch(fetchCurrentMovie(params.id));
 
     return resetState;
-  }, [getCurrentMovie, resetState, params]);
+  }, [dispatch, params.id]);
 
   if (!isCurrentMovieLoaded) {
     return (
@@ -76,27 +80,4 @@ function PlayerPage(props) {
   );
 }
 
-PlayerPage.propTypes = {
-  getCurrentMovie: PropTypes.func.isRequired,
-  resetState: PropTypes.func.isRequired,
-  currentMovie: movieProp.isRequired,
-  isCurrentMovieLoaded: PropTypes.bool.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  currentMovie: state.currentMovie,
-  isCurrentMovieLoaded: state.isCurrentMovieLoaded,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getCurrentMovie(id) {
-    dispatch(fetchCurrentMovie(id));
-  },
-  resetState() {
-    dispatch(ActionCreator.resetCurrentMovie());
-    dispatch(ActionCreator.resetIsCurrentMovieLoaded());
-  },
-});
-
-export {PlayerPage};
-export default connect(mapStateToProps, mapDispatchToProps)(PlayerPage);
+export default PlayerPage;

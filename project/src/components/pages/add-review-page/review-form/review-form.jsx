@@ -1,27 +1,28 @@
 import React, {Fragment, useEffect} from 'react';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import useInput from '../../../../hooks/use-input';
 import {addComment} from '../../../../store/api-actions';
 import PropTypes from 'prop-types';
-import {ActionCreator} from '../../../../store/action';
+import {resetServerResponseAddCommentError} from '../../../../store/comments/action';
+import {getServerResponseAddCommentError, getHasServerResponseAddCommentError, getIsWaitingServerResponseAddComment} from '../../../../store/comments/selectors';
 
 const STARS_COUNT = 10;
 const CommentValidity = {
   MINIMUM_LETTERS: 50,
   MAXIMUM_LETTERS: 400,
 };
+const validateComment = (text) => text.length >= CommentValidity.MINIMUM_LETTERS && text.length <= CommentValidity.MAXIMUM_LETTERS;
 
-function ReviewForm(props) {
-  const {
-    movieId,
-    onSubmit,
-    resetServerResponseAddCommentError,
-    hasServerResponseAddCommentError,
-    serverResponseAddCommentError,
-    isWaitingServerResponseAddComment,
-  } = props;
+function ReviewForm({movieId}) {
+  const hasServerResponseAddCommentError = useSelector(getHasServerResponseAddCommentError);
+  const serverResponseAddCommentError = useSelector(getServerResponseAddCommentError);
+  const isWaitingServerResponseAddComment = useSelector(getIsWaitingServerResponseAddComment);
 
-  const validateComment = (text) => text.length >= CommentValidity.MINIMUM_LETTERS && text.length <= CommentValidity.MAXIMUM_LETTERS;
+  const dispatch = useDispatch();
+
+  const onSubmit = (id, formData) => {
+    dispatch(addComment(id, formData));
+  };
 
   const {
     value: enteredRating,
@@ -35,7 +36,7 @@ function ReviewForm(props) {
     valueChangeHandler: commentChangedHandler,
   } = useInput(validateComment);
 
-  useEffect(() => resetServerResponseAddCommentError, [resetServerResponseAddCommentError]);
+  useEffect(() => () => dispatch(resetServerResponseAddCommentError()), [dispatch]);
 
   const isFormInvalid = ratingInputHasError || commentInputHasError || !isRatingTouched;
 
@@ -109,28 +110,6 @@ function ReviewForm(props) {
 
 ReviewForm.propTypes = {
   movieId: PropTypes.number.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  resetServerResponseAddCommentError: PropTypes.func.isRequired,
-  hasServerResponseAddCommentError: PropTypes.bool.isRequired,
-  serverResponseAddCommentError: PropTypes.string.isRequired,
-  isWaitingServerResponseAddComment: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  hasServerResponseAddCommentError: state.hasServerResponseAddCommentError,
-  serverResponseAddCommentError: state.serverResponseAddCommentError,
-  isWaitingServerResponseAddComment: state.isWaitingServerResponseAddComment,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit(id, formData) {
-    dispatch(addComment(id, formData));
-  },
-  resetServerResponseAddCommentError() {
-    dispatch(ActionCreator.resetServerResponseAddCommentError());
-    dispatch(ActionCreator.resetHasServerResponseAddCommentError());
-  },
-});
-
-export {ReviewForm};
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewForm);
+export default ReviewForm;
