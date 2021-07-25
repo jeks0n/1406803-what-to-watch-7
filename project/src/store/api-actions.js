@@ -9,7 +9,6 @@ import {
   loadMyMovies, loadPromoMovie,
   loadSimilarMovies
 } from './movies/action';
-import {checkShowMoreButtonVisibility} from './movies/action';
 import {
   loadCurrentMovieComments,
   resetIsWaitingServerResponseAddComment,
@@ -30,7 +29,6 @@ export const fetchMovies = () => (dispatch, _getState, api) => (
       const movies = data.map(Adapter.adaptMovieToClient);
       dispatch(loadMovies(movies));
       dispatch(getGenres(movies));
-      dispatch(checkShowMoreButtonVisibility());
     })
 );
 

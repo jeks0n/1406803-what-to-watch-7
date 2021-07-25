@@ -16,16 +16,12 @@ export const ActionType = {
   INCREASE_NUMBER_OF_VISIBLE_MOVIES: 'movies/increaseNumberOfVisibleMovies',
   RESET_NUMBER_OF_VISIBLE_MOVIES: 'movies/resetNumberOfVisibleMovies',
   TOGGLE_SHOW_MORE_BUTTON_VISIBILITY: 'movies/toggleShowMoreButtonVisibility',
-  CHECK_SHOW_MORE_BUTTON_VISIBILITY: 'movies/checkShowMoreButtonVisibility',
+  // CHECK_SHOW_MORE_BUTTON_VISIBILITY: 'movies/checkShowMoreButtonVisibility',
 };
 
 export const getGenres = createAction(ActionType.GET_GENRES);
 
 export const setCurrentGenre = createAction(ActionType.SET_CURRENT_GENRE, (genre) => ({
-  payload: genre,
-}));
-
-export const filterMoviesByGenre = createAction(ActionType.FILTER_MOVIES_BY_GENRE, (genre) => ({
   payload: genre,
 }));
 
@@ -65,4 +61,4 @@ export const resetNumberOfVisibleMovies = createAction(ActionType.RESET_NUMBER_O
 
 export const toggleShowMoreButtonVisibility = createAction(ActionType.TOGGLE_SHOW_MORE_BUTTON_VISIBILITY);
 
-export const checkShowMoreButtonVisibility = createAction(ActionType.CHECK_SHOW_MORE_BUTTON_VISIBILITY);
+// export const checkShowMoreButtonVisibility = createAction(ActionType.CHECK_SHOW_MORE_BUTTON_VISIBILITY);

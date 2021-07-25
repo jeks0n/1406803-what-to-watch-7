@@ -2,7 +2,6 @@ import {createReducer} from '@reduxjs/toolkit';
 import {
   getGenres,
   setCurrentGenre,
-  filterMoviesByGenre,
   changeMovieMyListStatus,
   resetCurrentMovie,
   resetMyMovies,
@@ -12,10 +11,8 @@ import {
   loadSimilarMovies,
   loadCurrentMovie,
   loadMyMovies,
-  checkShowMoreButtonVisibility,
   increaseNumberOfVisibleMovies,
-  resetNumberOfVisibleMovies,
-  toggleShowMoreButtonVisibility
+  resetNumberOfVisibleMovies
 } from './action';
 import {
   ALL_GENRES,
@@ -28,7 +25,6 @@ const initialState = {
   currentGenre: ALL_GENRES,
   genres: [],
   movies: [],
-  initialMovies: [],
   similarMovies: [],
   myMovies: [],
   currentMovie: {},
@@ -38,7 +34,6 @@ const initialState = {
   isSimilarMoviesLoaded: false,
   isMyMoviesLoaded: false,
   numberOfVisibleMovies: DEFAULT_NUMBER_OF_VISIBLE_MOVIES,
-  isShowMoreButtonVisible: false,
 };
 
 const movies = createReducer(initialState, (builder) => {
@@ -48,11 +43,6 @@ const movies = createReducer(initialState, (builder) => {
     })
     .addCase(setCurrentGenre, (state, action) => {
       state.currentGenre = action.payload;
-    })
-    .addCase(filterMoviesByGenre, (state, action) => {
-      state.movies = action.payload === ALL_GENRES ?
-        state.initialMovies
-        : state.initialMovies.filter((movie) => movie.genre === state.currentGenre);
     })
     .addCase(changeMovieMyListStatus, (state, action) => {
       state.currentMovie = changeIsFavoriteStatus(state.currentMovie, action.payload.id, action.payload.isFavorite);
@@ -98,12 +88,6 @@ const movies = createReducer(initialState, (builder) => {
     .addCase(resetNumberOfVisibleMovies, (state) => {
       state.numberOfVisibleMovies = state.movies.length > DEFAULT_NUMBER_OF_VISIBLE_MOVIES ?
         DEFAULT_NUMBER_OF_VISIBLE_MOVIES : state.movies.length;
-    })
-    .addCase(toggleShowMoreButtonVisibility, (state) => {
-      state.isShowMoreButtonVisible = !state.isShowMoreButtonVisible;
-    })
-    .addCase(checkShowMoreButtonVisibility, (state) => {
-      state.isShowMoreButtonVisible = state.movies.length > state.numberOfVisibleMovies;
     });
 });
 

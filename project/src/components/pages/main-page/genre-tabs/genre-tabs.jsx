@@ -1,8 +1,8 @@
 import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {getCurrentGenre, getGenres} from '../../../../store/movies/selectors';
-import {filterMoviesByGenre, setCurrentGenre} from '../../../../store/movies/action';
-import {checkShowMoreButtonVisibility, resetNumberOfVisibleMovies} from '../../../../store/movies/action';
+import {setCurrentGenre} from '../../../../store/movies/action';
+import {resetNumberOfVisibleMovies} from '../../../../store/movies/action';
 
 function GenreTabs(props) {
   const currentGenre = useSelector(getCurrentGenre);
@@ -12,9 +12,8 @@ function GenreTabs(props) {
 
   const setMoviesFilter = (genre) => {
     dispatch(setCurrentGenre(genre));
-    dispatch(filterMoviesByGenre(genre));
     dispatch(resetNumberOfVisibleMovies());
-    dispatch(checkShowMoreButtonVisibility());
+    // dispatch(checkShowMoreButtonVisibility());
   };
 
   return (

@@ -8,8 +8,7 @@ import MovieList from '../../movie/movie-list/movie-list';
 import ShowMoreButton from '../../UI/show-more-button/show-more-button';
 import {fetchMovies, fetchPromoMovie} from '../../../store/api-actions';
 import {getIsMoviesLoaded, getMovies, getPromoMovie, getIsShowMoreButtonVisible, getNumberOfVisibleMovies} from '../../../store/movies/selectors';
-// import {getIsShowMoreButtonVisible, getNumberOfVisibleMovies} from '../../../store/movies/selectors';
-import {increaseNumberOfVisibleMovies, resetNumberOfVisibleMovies, checkShowMoreButtonVisibility} from '../../../store/movies/action';
+import {increaseNumberOfVisibleMovies, resetNumberOfVisibleMovies} from '../../../store/movies/action';
 
 function MainPage(props) {
   const movies = useSelector(getMovies);
@@ -22,7 +21,6 @@ function MainPage(props) {
 
   const addMoreVisibleMovies = () => {
     dispatch(increaseNumberOfVisibleMovies());
-    dispatch(checkShowMoreButtonVisibility());
   };
 
   useEffect(() => {
@@ -31,7 +29,6 @@ function MainPage(props) {
 
     return () => {
       dispatch(resetNumberOfVisibleMovies());
-      dispatch(checkShowMoreButtonVisibility());
     };
   }, [dispatch]);
 
