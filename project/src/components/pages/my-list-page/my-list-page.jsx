@@ -1,26 +1,23 @@
 import React, {useEffect} from 'react';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Logo from '../../UI/logo/logo';
 import {fetchMyMovies} from '../../../store/api-actions';
 import UserBlock from '../../UI/user-block/user-block';
 import MovieList from '../../movie/movie-list/movie-list';
-import PropTypes from 'prop-types';
-import movieProp from '../../../utils/movie.prop';
-import {ActionCreator} from '../../../store/action';
 import LoadingScreen from '../../UI/loading-screen/loading-screen';
+import {getIsMyMoviesLoaded, getMyMovies} from '../../../store/movies/selectors';
+import {resetMyMovies} from '../../../store/movies/action';
 
-function MyListPage(props) {
-  const {
-    myMovies,
-    isMyMoviesLoaded,
-    getMyMovies,
-    resetMyMovies,
-  } = props;
+function MyListPage() {
+  const myMovies = useSelector(getMyMovies);
+  const isMyMoviesLoaded = useSelector(getIsMyMoviesLoaded);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getMyMovies();
-    return resetMyMovies;
-  }, [getMyMovies, resetMyMovies]);
+    dispatch(fetchMyMovies());
+    return () => dispatch(resetMyMovies());
+  }, [dispatch]);
 
   if (!isMyMoviesLoaded) {
     return (
@@ -55,27 +52,4 @@ function MyListPage(props) {
   );
 }
 
-MyListPage.propTypes = {
-  getMyMovies: PropTypes.func.isRequired,
-  myMovies: PropTypes.arrayOf(movieProp).isRequired,
-  isMyMoviesLoaded: PropTypes.bool.isRequired,
-  resetMyMovies: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  myMovies: state.myMovies,
-  isMyMoviesLoaded: state.isMyMoviesLoaded,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getMyMovies() {
-    dispatch(fetchMyMovies());
-  },
-  resetMyMovies() {
-    dispatch(ActionCreator.resetIsMyMoviesLoaded());
-    dispatch(ActionCreator.resetMyMovies());
-  },
-});
-
-export {MyListPage};
-export default connect(mapStateToProps, mapDispatchToProps)(MyListPage);
+export default MyListPage;

@@ -1,10 +1,13 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import {useDispatch} from 'react-redux';
 import movieProp from '../../../utils/movie.prop';
 import {changeMovieMyMovieListStatus} from '../../../store/api-actions';
 
-function MyListButton({movie,changeMyListStatus}) {
+function MyListButton({movie}) {
+  const dispatch = useDispatch();
+
+  const changeMyListStatus = (currentMovie) => dispatch(changeMovieMyMovieListStatus(currentMovie));
+
   const iconName = movie.isFavorite ? 'in-list' : 'add';
 
   return (
@@ -23,14 +26,6 @@ function MyListButton({movie,changeMyListStatus}) {
 
 MyListButton.propTypes = {
   movie: movieProp,
-  changeMyListStatus: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  changeMyListStatus(movie) {
-    dispatch(changeMovieMyMovieListStatus(movie));
-  },
-});
-
-export {MyListButton};
-export default connect(null, mapDispatchToProps)(MyListButton);
+export default MyListButton;

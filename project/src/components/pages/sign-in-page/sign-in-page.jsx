@@ -1,13 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import useInput from '../../../hooks/use-input';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Logo from '../../UI/logo/logo';
 import {login} from '../../../store/api-actions';
-import PropTypes from 'prop-types';
 import {AppRouteCreator, AuthorizationStatus} from '../../../const';
 import {validateEmail, checkInputIsEmpty} from '../../../utils/user';
-import {ActionCreator} from '../../../store/action';
+import {
+  getAuthorizationStatus,
+  getHasServerResponseAuthorizationError,
+  getServerResponseAuthorizationError
+} from '../../../store/user/selectors';
+import {resetServerAuthorizationError} from '../../../store/user/action';
 
 const ErrorMessages = {
   DEFAULT: 'Please enter your credentials',
@@ -15,14 +19,16 @@ const ErrorMessages = {
   EMAIL_INCORRECT: 'Please enter a valid email',
 };
 
-function SignInPage(props) {
-  const {
-    onSubmit,
-    authorizationStatus,
-    hasServerResponseAuthorizationError,
-    serverResponseAuthorizationError,
-    resetServerAuthorizationError,
-  } = props;
+function SignInPage() {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const serverResponseAuthorizationError = useSelector(getServerResponseAuthorizationError);
+  const hasServerResponseAuthorizationError = useSelector(getHasServerResponseAuthorizationError);
+
+  const dispatch = useDispatch();
+
+  const onSubmit = (formData) => dispatch(login(formData));
+  const resetServerAuthorizationErrorOnDestroy = dispatch(resetServerAuthorizationError);
+
   const [isFormTouched, setIsFormTouched] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const {
@@ -56,8 +62,8 @@ function SignInPage(props) {
       history.push({pathname: AppRouteCreator.getMain()});
     }
 
-    return resetServerAuthorizationError;
-  }, [authorizationStatus, history, resetServerAuthorizationError]);
+    return resetServerAuthorizationErrorOnDestroy;
+  }, [authorizationStatus, history, resetServerAuthorizationErrorOnDestroy]);
 
   const isFormInvalid = emailInputHasError || passwordInputHasError;
 
@@ -140,29 +146,4 @@ function SignInPage(props) {
   );
 }
 
-SignInPage.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  authorizationStatus: PropTypes.string.isRequired,
-  hasServerResponseAuthorizationError: PropTypes.bool.isRequired,
-  serverResponseAuthorizationError: PropTypes.string.isRequired,
-  resetServerAuthorizationError: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-  hasServerResponseAuthorizationError: state.hasServerResponseAuthorizationError,
-  serverResponseAuthorizationError: state.serverResponseAuthorizationError,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit(formData) {
-    dispatch(login(formData));
-  },
-  resetServerAuthorizationError() {
-    dispatch(ActionCreator.resetServerAuthorizationError());
-    dispatch(ActionCreator.resetHasServerAuthorizationError());
-  },
-});
-
-export {SignInPage};
-export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
+export default SignInPage;

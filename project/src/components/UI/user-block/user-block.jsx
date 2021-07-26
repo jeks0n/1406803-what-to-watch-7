@@ -1,18 +1,17 @@
 import React from 'react';
 import {Link, useHistory} from 'react-router-dom';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {AppRouteCreator, AuthorizationStatus} from '../../../const';
 import {logout} from '../../../store/api-actions';
-import PropTypes from 'prop-types';
+import {getAuthorizationStatus, getUserAvatar, getUserEmail, getUserName} from '../../../store/user/selectors';
 
-function UserBlock(props) {
-  const {
-    authorizationStatus,
-    userAvatar,
-    userEmail,
-    userName,
-    logoutUser,
-  } = props;
+function UserBlock() {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const userAvatar = useSelector(getUserAvatar);
+  const userEmail = useSelector(getUserEmail);
+  const userName = useSelector(getUserName);
+
+  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -34,7 +33,7 @@ function UserBlock(props) {
           className="user-block__link"
           onClick={(evt) => {
             evt.preventDefault();
-            logoutUser();
+            dispatch(logout());
           }}
         >Sign out
         </a>
@@ -55,26 +54,4 @@ function UserBlock(props) {
   );
 }
 
-UserBlock.propTypes = {
-  authorizationStatus: PropTypes.string.isRequired,
-  userAvatar: PropTypes.string.isRequired,
-  userEmail: PropTypes.string.isRequired,
-  userName: PropTypes.string.isRequired,
-  logoutUser: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-  userAvatar: state.userAvatar,
-  userEmail: state.userEmail,
-  userName: state.userName,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  logoutUser() {
-    dispatch(logout());
-  },
-});
-
-export {UserBlock};
-export default connect(mapStateToProps, mapDispatchToProps)(UserBlock);
+export default UserBlock;

@@ -5,6 +5,7 @@ export const Adapter = {
   }),
   adaptCommentToClient: (comment) => ({
     ...comment,
+    rating: comment.rating.toFixed(1),
     date: comment.date !== null
       ? new Date(comment.date)
       : comment.date,

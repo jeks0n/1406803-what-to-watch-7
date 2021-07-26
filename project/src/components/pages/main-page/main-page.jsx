@@ -1,35 +1,36 @@
 import React, {useEffect} from 'react';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Logo from '../../UI/logo/logo';
 import UserBlock from '../../UI/user-block/user-block';
 import PromoMovieCard from '../../movie/promo-movie/promo-movie';
 import GenreTabs from './genre-tabs/genre-tabs';
 import MovieList from '../../movie/movie-list/movie-list';
-import PropTypes from 'prop-types';
-import movieProp from '../../../utils/movie.prop';
 import ShowMoreButton from '../../UI/show-more-button/show-more-button';
-import {ActionCreator} from '../../../store/action';
 import {fetchMovies, fetchPromoMovie} from '../../../store/api-actions';
+import {getIsMoviesLoaded, getMovies, getPromoMovie, getIsShowMoreButtonVisible, getNumberOfVisibleMovies} from '../../../store/movies/selectors';
+import {increaseNumberOfVisibleMovies, resetNumberOfVisibleMovies} from '../../../store/movies/action';
 
 function MainPage(props) {
-  const {
-    getMovies,
-    getPromoMovie,
-    movies,
-    promoMovie,
-    numberOfVisibleMovies,
-    increaseNumberOfVisibleMovies,
-    resetNumberOfVisibleMovies,
-    isMoviesLoaded,
-    isShowMoreButtonVisible,
-  } = props;
+  const movies = useSelector(getMovies);
+  const promoMovie = useSelector(getPromoMovie);
+  const numberOfVisibleMovies = useSelector(getNumberOfVisibleMovies);
+  const isMoviesLoaded = useSelector(getIsMoviesLoaded);
+  const isShowMoreButtonVisible = useSelector(getIsShowMoreButtonVisible);
+
+  const dispatch = useDispatch();
+
+  const addMoreVisibleMovies = () => {
+    dispatch(increaseNumberOfVisibleMovies());
+  };
 
   useEffect(() => {
-    getMovies();
-    getPromoMovie();
+    dispatch(fetchMovies());
+    dispatch(fetchPromoMovie());
 
-    return resetNumberOfVisibleMovies;
-  }, [getMovies, getPromoMovie, resetNumberOfVisibleMovies]);
+    return () => {
+      dispatch(resetNumberOfVisibleMovies());
+    };
+  }, [dispatch]);
 
   return (
     <>
@@ -52,7 +53,7 @@ function MainPage(props) {
 
           <MovieList movies={movies} numberOfVisibleMovies={numberOfVisibleMovies} isMoviesLoaded={isMoviesLoaded} />
 
-          {isShowMoreButtonVisible && <ShowMoreButton onClickEvent={increaseNumberOfVisibleMovies} />}
+          {isShowMoreButtonVisible && <ShowMoreButton onClickEvent={addMoreVisibleMovies} />}
         </section>
 
         <footer className="page-footer">
@@ -67,42 +68,4 @@ function MainPage(props) {
   );
 }
 
-MainPage.propTypes = {
-  getMovies: PropTypes.func.isRequired,
-  getPromoMovie: PropTypes.func.isRequired,
-  movies: PropTypes.arrayOf(movieProp).isRequired,
-  promoMovie: movieProp.isRequired,
-  numberOfVisibleMovies: PropTypes.number.isRequired,
-  increaseNumberOfVisibleMovies: PropTypes.func.isRequired,
-  resetNumberOfVisibleMovies: PropTypes.func.isRequired,
-  isShowMoreButtonVisible: PropTypes.bool.isRequired,
-  isMoviesLoaded: PropTypes.bool.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  movies: state.movies,
-  promoMovie: state.promoMovie,
-  isMoviesLoaded: state.isMoviesLoaded,
-  numberOfVisibleMovies: state.numberOfVisibleMovies,
-  isShowMoreButtonVisible: state.isShowMoreButtonVisible,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getMovies() {
-    dispatch(fetchMovies());
-  },
-  getPromoMovie() {
-    dispatch(fetchPromoMovie());
-  },
-  increaseNumberOfVisibleMovies() {
-    dispatch(ActionCreator.increaseNumberOfVisibleMovies());
-    dispatch(ActionCreator.checkShowMoreButtonVisibility());
-  },
-  resetNumberOfVisibleMovies() {
-    dispatch(ActionCreator.resetNumberOfVisibleMovies());
-    dispatch(ActionCreator.checkShowMoreButtonVisibility());
-  },
-});
-
-export {MainPage};
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default MainPage;
