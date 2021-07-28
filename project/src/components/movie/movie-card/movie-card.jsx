@@ -33,7 +33,7 @@ function MovieCard(props) {
     >
       <div className="small-film-card__image">
         {isPlaying
-          ? <VideoPlayer src={movie.previewVideoLink} isMuted isPlaying={isPlaying}/>
+          ? <VideoPlayer src={movie.previewVideoLink} isMuted isPlaying />
           : <img src={movie.previewImage} alt={movie.name} width="280" height="175"/>}
       </div>
       <h3 className="small-film-card__title">
