@@ -33,11 +33,11 @@ function MovieCard(props) {
     >
       <div className="small-film-card__image">
         {isPlaying
-          ? <VideoPlayer src={movie.previewVideoLink} isMuted />
+          ? <VideoPlayer src={movie.previewVideoLink} isMuted isPlaying={isPlaying}/>
           : <img src={movie.previewImage} alt={movie.name} width="280" height="175"/>}
       </div>
       <h3 className="small-film-card__title">
-        <Link className="small-film-card__link" to={`${AppRouteCreator.getFilm(movie.id)}`} movies={[movie]}>
+        <Link className="small-film-card__link" to={`${AppRouteCreator.getFilm(movie.id)}`}>
           {movie.name}
         </Link>
       </h3>
