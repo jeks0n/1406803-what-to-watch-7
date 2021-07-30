@@ -9,6 +9,7 @@ export const APP_ROUTE_CREATOR = {
 };
 
 export const ALL_GENRES = 'All genres';
+export const CANT_REACH_THE_SERVER = 'Can\'t reach the server';
 export const MAX_GENRES_TABS_COUNT = 10;
 export const DEFAULT_NUMBER_OF_VISIBLE_MOVIES = 8;
 export const DEFAULT_NUMBER_OF_SIMILAR_MOVIES = 4;
@@ -31,7 +32,6 @@ export const API_ROUTE_CREATOR = {
   getPromoMovie: () => '/promo',
   getSimilarMovies: (id) => `/films/${id}/similar`,
   getMyMovies: () => '/favorite',
-  getFavoriteMovies: () => '/favorite',
   getCurrentMovie: (id) => `/films/${id}`,
   getCurrentMovieComments: (id) => `/comments/${id}`,
   addComment: (id) => `/comments/${id}`,

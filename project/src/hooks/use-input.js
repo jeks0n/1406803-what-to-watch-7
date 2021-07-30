@@ -15,7 +15,7 @@ const useInput = (validateValue, setIsFormTouched) => {
     }
   };
 
-  const inputBlurHandler = (event) => {
+  const inputBlurHandler = () => {
     setIsTouched(true);
     if (setIsFormTouched) {
       setIsFormTouched(true);

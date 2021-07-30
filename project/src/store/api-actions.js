@@ -1,5 +1,5 @@
 import {redirectToRoute} from './action';
-import {AuthorizationStatus, API_ROUTE_CREATOR, APP_ROUTE_CREATOR} from '../const';
+import {AuthorizationStatus, API_ROUTE_CREATOR, APP_ROUTE_CREATOR, CANT_REACH_THE_SERVER} from '../const';
 import {Adapter} from './adapter';
 import {
   changeMovieMyListStatus,
@@ -122,7 +122,11 @@ export const login = ({login: email, password}) => (dispatch, _getState, api) =>
     .then(() => dispatch(requireAuthorization(AuthorizationStatus.AUTH)))
     .then(() => dispatch(redirectToRoute(APP_ROUTE_CREATOR.getMain())))
     .catch((error) => {
-      dispatch(setServerAuthorizationError(error.response.data.error));
+      if (error.response) {
+        return dispatch(setServerAuthorizationError(error.response.data.error));
+      }
+
+      dispatch(setServerAuthorizationError(CANT_REACH_THE_SERVER));
     })
 );
 
@@ -147,6 +151,11 @@ export const addComment = (movieId, {rating, comment}) => (dispatch, _getState, 
     })
     .catch((error) => {
       dispatch(resetIsWaitingServerResponseAddComment());
-      dispatch(setServerResponseAddCommentError(error.response.data.error));
+
+      if (error.response) {
+        return dispatch(setServerResponseAddCommentError(error.response.data.error));
+      }
+
+      dispatch(setServerResponseAddCommentError(CANT_REACH_THE_SERVER));
     });
 };

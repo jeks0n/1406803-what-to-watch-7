@@ -10,7 +10,7 @@ import {fetchMovies, fetchPromoMovie} from '../../../store/api-actions';
 import {getIsMoviesLoaded, getMovies, getPromoMovie, getIsShowMoreButtonVisible, getNumberOfVisibleMovies} from '../../../store/movies/selectors';
 import {increaseNumberOfVisibleMovies, resetNumberOfVisibleMovies} from '../../../store/movies/action';
 
-function MainPage(props) {
+function MainPage() {
   const movies = useSelector(getMovies);
   const promoMovie = useSelector(getPromoMovie);
   const numberOfVisibleMovies = useSelector(getNumberOfVisibleMovies);

@@ -4,7 +4,7 @@ import {getCurrentGenre, getGenres} from '../../../../store/movies/selectors';
 import {setCurrentGenre} from '../../../../store/movies/action';
 import {resetNumberOfVisibleMovies} from '../../../../store/movies/action';
 
-function GenreTabs(props) {
+function GenreTabs() {
   const currentGenre = useSelector(getCurrentGenre);
   const genres = useSelector(getGenres);
 
