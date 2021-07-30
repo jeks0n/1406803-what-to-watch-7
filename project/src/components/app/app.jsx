@@ -1,7 +1,7 @@
 import React from 'react';
 import {Switch, Route, Router as BrowserRouter} from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
-import {AppRouteCreator} from '../../const';
+import {APP_ROUTE_CREATOR} from '../../const';
 import AddReviewPage from '../pages/add-review-page/add-review-page';
 import FilmPage from '../pages/film-page/film-page';
 import MainPage from '../pages/main-page/main-page';
@@ -15,28 +15,28 @@ function App() {
   return (
     <BrowserRouter history={browserHistory}>
       <Switch>
-        <Route exact path={AppRouteCreator.getMain()}>
+        <Route exact path={APP_ROUTE_CREATOR.getMain()}>
           <MainPage />
         </Route>
-        <Route exact path={AppRouteCreator.getSignIn()}>
+        <Route exact path={APP_ROUTE_CREATOR.getSignIn()}>
           <SignInPage />
         </Route>
         <PrivateRoute
           exact
-          path={AppRouteCreator.getMyList()}
+          path={APP_ROUTE_CREATOR.getMyList()}
           render={() => <MyListPage />}
         >
         </PrivateRoute>
-        <Route exact path={AppRouteCreator.getFilm()} >
+        <Route exact path={APP_ROUTE_CREATOR.getFilm()} >
           <FilmPage />
         </Route>
         <PrivateRoute
           exact
-          path={AppRouteCreator.getAddReview()}
+          path={APP_ROUTE_CREATOR.getAddReview()}
           render={() => <AddReviewPage />}
         >
         </PrivateRoute>
-        <Route exact path={AppRouteCreator.getPlayer()}>
+        <Route exact path={APP_ROUTE_CREATOR.getPlayer()}>
           <PlayerPage />
         </Route>
         <Route>

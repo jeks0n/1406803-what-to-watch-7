@@ -9,7 +9,7 @@ import MyListButton from '../../UI/my-list-button/my-list-button';
 import FilmTabs from './film-tabs/film-tabs';
 import {fetchCurrentMovie, fetchCurrentMovieComments, fetchSimilarMovies} from '../../../store/api-actions';
 import LoadingScreen from '../../UI/loading-screen/loading-screen';
-import {AppRouteCreator, AuthorizationStatus} from '../../../const';
+import {APP_ROUTE_CREATOR, AuthorizationStatus} from '../../../const';
 import {getAuthorizationStatus} from '../../../store/user/selectors';
 import {getCurrentMovie, getIsCurrentMovieLoaded, getIsSimilarMoviesLoaded, getSimilarMovies} from '../../../store/movies/selectors';
 import {getCurrentMovieComments, getIsCurrentMovieCommentsLoaded} from '../../../store/comments/selectors';
@@ -86,9 +86,9 @@ function FilmPage() {
                 <PlayButton movie={currentMovie}/>
                 <MyListButton movie={currentMovie} />
                 {authorizationStatus === AuthorizationStatus.AUTH &&
-                <Link href="add-review.html"
+                <Link
                   className="btn film-card__button"
-                  to={`${AppRouteCreator.getAddReview(id)}`}
+                  to={`${APP_ROUTE_CREATOR.getAddReview(id)}`}
                   movie={currentMovie}
                 >Add review
                 </Link>}

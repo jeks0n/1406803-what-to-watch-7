@@ -4,7 +4,7 @@ import useInput from '../../../hooks/use-input';
 import {useSelector, useDispatch} from 'react-redux';
 import Logo from '../../UI/logo/logo';
 import {login} from '../../../store/api-actions';
-import {AppRouteCreator, AuthorizationStatus} from '../../../const';
+import {APP_ROUTE_CREATOR, AuthorizationStatus} from '../../../const';
 import {validateEmail, checkInputIsEmpty} from '../../../utils/user';
 import {
   getAuthorizationStatus,
@@ -59,7 +59,7 @@ function SignInPage() {
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.AUTH) {
-      history.push({pathname: AppRouteCreator.getMain()});
+      history.push({pathname: APP_ROUTE_CREATOR.getMain()});
     }
 
     return resetServerAuthorizationErrorOnDestroy;

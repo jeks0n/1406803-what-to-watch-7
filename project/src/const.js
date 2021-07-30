@@ -1,4 +1,4 @@
-export const AppRouteCreator = {
+export const APP_ROUTE_CREATOR = {
   getAddReview: (id = ':id') => `/films/${id}/review`,
   getFilm: (id = ':id') => `/films/${id}`,
   getMain: () => '/',
@@ -25,7 +25,7 @@ export const AuthorizationStatus = {
   UNKNOWN: 'UNKNOWN',
 };
 
-export const APIRouteCreator = {
+export const API_ROUTE_CREATOR = {
   changeMovieMyListStatus: (id, status) => `/favorite/${id}/${status}`,
   getMovies: () => '/films',
   getPromoMovie: () => '/promo',

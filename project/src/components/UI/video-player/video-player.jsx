@@ -27,19 +27,30 @@ function VideoPlayer(props) {
   }, [src, onCurrentVideoTimeChanged]);
 
   useEffect(() => {
+    let cleanupFunction = false;
+
     if (videoRef.current) {
       videoRef.current.onloadeddata = () => {
-        setIsLoading(false);
-        onTotalVideoTimeChanged(videoRef.current.duration);
+        if (!cleanupFunction) {
+          setIsLoading(false);
+          onTotalVideoTimeChanged(videoRef.current.duration);
+        }
       };
     }
+
+    return () => cleanupFunction = true;
   }, [src, onTotalVideoTimeChanged]);
 
   useEffect(() => {
     if (isPlaying) {
-      videoRef.current.play();
+      const playPromise = videoRef.current.play();
+
+      if (playPromise !== undefined) {
+        playPromise.then((_) => {}).catch(() => {});
+      }
       return;
     }
+
     videoRef.current.pause();
   }, [isPlaying]);
 

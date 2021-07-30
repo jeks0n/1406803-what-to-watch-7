@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
-import {AppRouteCreator, AuthorizationStatus} from '../../../const';
+import {APP_ROUTE_CREATOR, AuthorizationStatus} from '../../../const';
 import {logout} from '../../../store/api-actions';
 import {getAuthorizationStatus, getUserAvatar, getUserEmail, getUserName} from '../../../store/user/selectors';
 
@@ -24,7 +24,7 @@ function UserBlock() {
             alt={`${userName}: ${userEmail}`}
             width="63"
             height="63"
-            onClick={() => history.push({pathname: AppRouteCreator.getMyList()})}
+            onClick={() => history.push({pathname: APP_ROUTE_CREATOR.getMyList()})}
           />
         </div>
       </li>
@@ -43,7 +43,7 @@ function UserBlock() {
 
   const userBlockUnauthorized = (
     <div className="user-block">
-      <Link to={AppRouteCreator.getSignIn()} className="user-block__link">Sign in</Link>
+      <Link to={APP_ROUTE_CREATOR.getSignIn()} className="user-block__link">Sign in</Link>
     </div>
   );
 

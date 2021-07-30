@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
-import {AppRouteCreator} from '../../../const';
+import {APP_ROUTE_CREATOR} from '../../../const';
 import {fetchCurrentMovie} from '../../../store/api-actions';
 import LoadingScreen from '../../UI/loading-screen/loading-screen';
 import {resetCurrentMovie} from '../../../store/movies/action';
@@ -63,7 +63,7 @@ function PlayerPage() {
           return history.goBack();
         }
 
-        history.push(AppRouteCreator.getMain());
+        history.push(APP_ROUTE_CREATOR.getMain());
       }}
       >Exit
       </button>
